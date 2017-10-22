@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "declaration": false,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "pretty": true,
+    "skipLibCheck": true,
+    "lib": ["es2015", "dom"]
+  },
+  "include": [],
+  "files": [
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
