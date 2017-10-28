@@ -59,11 +59,11 @@ exports.up = (db) => {
         CONSTRAINT "User_name_partyId_key" UNIQUE (name, "partyId"),
         CONSTRAINT email UNIQUE (email),
         CONSTRAINT "User_partyId_fkey" FOREIGN KEY ("partyId")
-            REFERENCES public."Party" (id) MATCH SIMPLE
+            REFERENCES "Party" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE,
         CONSTRAINT "User_relationKey_fkey" FOREIGN KEY ("relationKey")
-            REFERENCES public."Relation" (key) MATCH SIMPLE
+            REFERENCES "Relation" (key) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE NO ACTION
     );
