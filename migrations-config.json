@@ -1,0 +1,19 @@
+{
+  "db": {
+    "driver": "pg",
+    "multipleStatements": true,
+    "host": {
+      "ENV": "DB_HOST"
+    },
+    "database": {
+      "ENV": "DB_NAME"
+    },
+    "user": {
+      "ENV": "DB_USERNAME"
+    },
+    "password": {
+      "ENV": "DB_PWD"
+    },
+    "ssl": true
+  }
+}

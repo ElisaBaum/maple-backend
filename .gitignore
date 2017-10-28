@@ -7,3 +7,10 @@ node_modules
 # IDE
 .idea
 *.iml
+
+# build
+*.js
+*.js.map
+
+# migrations
+!migrations/*.js
