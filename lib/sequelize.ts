@@ -7,7 +7,7 @@ export const sequelize = new Sequelize({
   dialect: 'postgres',
   username: process.env.DB_USERNAME as string,
   password: process.env.DB_PWD as string,
-  modelPaths: [__dirname + '/models'],
+  modelPaths: [__dirname + '/user/models'],
   dialectOptions: {
     ssl: true
   }
