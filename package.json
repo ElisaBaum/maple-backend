@@ -22,8 +22,13 @@
     "db-migrate-pg": "^0.2.5"
   },
   "dependencies": {
-    "@types/express": "^4.0.37",
+    "@types/express": "^4.0.39",
+    "di-typescript": "^1.1.4",
     "express": "^4.16.2",
+    "pg": "^7.3.0",
+    "reflect-metadata": "^0.1.10",
+    "sequelize": "^4.20.1",
+    "sequelize-typescript": "^0.5.0",
     "ts-node": "^3.3.0",
     "typescript": "^2.5.3"
   }
