@@ -13,7 +13,9 @@
     "skipLibCheck": true,
     "lib": ["es2015", "dom"]
   },
-  "include": [],
+  "include": [
+    "lib"
+  ],
   "files": [
     "index.ts"
   ],
