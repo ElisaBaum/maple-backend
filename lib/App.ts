@@ -21,6 +21,7 @@ export class App {
 
     this._expressApp = createExpressServer({
       controllers: [UserController],
+      cors: true,
       defaultErrorHandler: false,
     });
 

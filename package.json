@@ -31,6 +31,7 @@
     "@types/passport-http": "^0.3.3",
     "@types/passport-jwt": "^3.0.0",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "di-typescript": "^1.1.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
