@@ -7,7 +7,7 @@ import {AuthenticationService} from "./AuthenticationService";
 import {jwtStrategy} from "./jwt-strategy";
 
 @Inject
-@Middleware({ type: "before" })
+@Middleware({ type: 'before' })
 export class AuthMiddleware implements ExpressMiddlewareInterface {
 
   private handler: RequestHandler;
