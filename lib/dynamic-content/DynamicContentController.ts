@@ -9,8 +9,9 @@ export class DynamicContentController {
   async getDynamicContent(@Param('key') key: string) {
     const dynamicContent = await DynamicContent.findByPrimary<DynamicContent<any>>(key);
 
-    if (dynamicContent) return dynamicContent.toJSON();
-
+    if (dynamicContent) {
+      return dynamicContent.toJSON();
+    }
     throw new NotFoundError();
   }
 
