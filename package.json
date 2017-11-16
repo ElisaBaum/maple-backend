@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "migrate": "db-migrate up --config migrations-config.json -e db",
-    "migrate-down": "db-migrate down -c 1 --config migrations-config.json -e db"
+    "migrate-down": "db-migrate down -c 1 --config migrations-config.json -e db",
+    "create-migration": "db-migrate create --config migrations-config.json -e db"
   },
   "repository": {
     "type": "git",
