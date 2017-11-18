@@ -5,7 +5,7 @@ import {NotFoundError} from "../common/NotFoundError";
 @JsonController()
 export class DynamicContentController {
 
-  @Get('/dynamicContent/:key')
+  @Get('/dynamic-content/:key')
   async getDynamicContent(@Param('key') key: string) {
     const dynamicContent = await DynamicContent.findByPrimary<DynamicContent<any>>(key);
 
