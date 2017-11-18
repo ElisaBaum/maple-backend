@@ -1,15 +1,17 @@
-import {Get, JsonController, Req, UseBefore} from "routing-controllers";
+import {Get, JsonController, Post, Req, Body, Patch, Param, OnUndefined, UseBefore} from "routing-controllers";
 import {Inject} from "di-typescript";
 import {AuthMiddleware} from "../authentication/AuthMiddleware";
 import {Request} from "express";
 import {AuthenticationService} from "../authentication/AuthenticationService";
+import {UserService} from "./UserService";
 
 @Inject
 @JsonController()
 @UseBefore(AuthMiddleware)
 export class UserController {
 
-  constructor(protected authService: AuthenticationService) {
+  constructor(protected authService: AuthenticationService,
+              protected userService: UserService) {
 
   }
 
@@ -18,5 +20,24 @@ export class UserController {
     return {token: this.authService.createJWToken(req.user)};
   }
 
+  @OnUndefined(200)
+  @Patch('/users/me')
+  async updateUserPartially(@Req() req: Request, @Body() user: any) {
+    const userId = req.user.id;
+    return this.userService.updateUserPartially(userId, user);
+  }
+
+  @Post('/users/me/companions')
+  async addCompanion(@Req() req: Request, @Body() companion: any) {
+    const userId = req.user.id;
+    return this.userService.createCompanion(userId, companion);
+  }
+
+  @OnUndefined(200)
+  @Patch('/users/me/companions/:companionId')
+  async updateCompanionPartially(@Req() req: Request, @Param('companionId') companionId: number, @Body() companion: any) {
+    const userId = req.user.id;
+    return this.userService.updateCompanionPartially(userId, companionId, companion);
+  }
 
 }

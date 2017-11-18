@@ -23,6 +23,7 @@ export class App {
       controllers: [UserController],
       cors: true,
       defaultErrorHandler: false,
+      classTransformer: false,
     });
 
     this._expressApp.use(errorhandler({
