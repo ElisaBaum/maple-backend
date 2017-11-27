@@ -1,7 +1,10 @@
-import * as express from 'express';
 import {Inject} from "di-typescript";
 import {Application} from "express";
 import {Sequelize} from "sequelize-typescript";
+import {createExpressServer, useContainer} from "routing-controllers";
+import {injector} from "./injector";
+import * as errorhandler from 'strong-error-handler';
+import {UserController} from "./user/UserController";
 
 @Inject
 export class App {
@@ -13,7 +16,19 @@ export class App {
   }
 
   constructor(protected sequelize: Sequelize) {
-    this._expressApp = express();
+
+    useContainer(injector);
+
+    this._expressApp = createExpressServer({
+      controllers: [UserController],
+      cors: true,
+      defaultErrorHandler: false,
+    });
+
+    this._expressApp.use(errorhandler({
+      debug: process.env.ENV !== 'prod',
+      log: true,
+    }));
   }
 
 }
