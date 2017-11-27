@@ -20,17 +20,17 @@ exports.up = (db) => {
     CREATE TABLE "Party"
     (
         id SERIAL NOT NULL,
-        code character varying COLLATE pg_catalog."default" NOT NULL,
+        code character varying NOT NULL,
         "maxPersonCount" integer,
-        CONSTRAINT "Party_pkey" PRIMARY KEY (id),
+        PRIMARY KEY (id),
         CONSTRAINT "Party_code_key" UNIQUE (code)
     );
     
     CREATE TABLE "Relation"
     (
-        key character varying(255) COLLATE pg_catalog."default" NOT NULL,
-        name character varying(255) COLLATE pg_catalog."default",
-        CONSTRAINT "Relation_pkey" PRIMARY KEY (key)
+        key character varying(255) NOT NULL,
+        name character varying(255) NOT NULL,
+        PRIMARY KEY (key)
     );
 
     INSERT INTO "Relation" (key, name) VALUES    
@@ -45,17 +45,17 @@ exports.up = (db) => {
     CREATE TABLE "User"
     (
         id SERIAL NOT NULL,
-        name character varying COLLATE pg_catalog."default" NOT NULL,
-        email character varying COLLATE pg_catalog."default",
-        phone character varying(255) COLLATE pg_catalog."default",
+        name character varying(255) NOT NULL,
+        email character varying(255),
+        phone character varying(255),
         accepted boolean,
-        "hashedPassword" character varying(255) COLLATE pg_catalog."default",
-        "avatarUrl" character varying(255) COLLATE pg_catalog."default",
+        "hashedPassword" character varying(255),
+        "avatarUrl" character varying(255),
         scopes json,
         "visibleForOthers" boolean,
         "partyId" integer NOT NULL,
-        "relationKey" character varying COLLATE pg_catalog."default" NOT NULL,
-        CONSTRAINT "User_pkey" PRIMARY KEY (id),
+        "relationKey" character varying(255),
+        PRIMARY KEY (id),
         CONSTRAINT "User_name_partyId_key" UNIQUE (name, "partyId"),
         CONSTRAINT email UNIQUE (email),
         CONSTRAINT "User_partyId_fkey" FOREIGN KEY ("partyId")
