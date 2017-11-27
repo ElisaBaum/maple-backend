@@ -4,7 +4,7 @@ import {Sequelize} from "sequelize-typescript";
 import {createExpressServer, useContainer} from "routing-controllers";
 import {injector} from "./injector";
 import * as errorhandler from 'strong-error-handler';
-import {UserController} from "./user/UserController";
+import {AuthMiddleware} from "./authentication/AuthMiddleware";
 
 @Inject
 export class App {
@@ -20,7 +20,8 @@ export class App {
     useContainer(injector);
 
     this._expressApp = createExpressServer({
-      controllers: [UserController],
+      controllers: [__dirname + "/**/*Controller.ts"],
+      middlewares: [AuthMiddleware],
       cors: true,
       defaultErrorHandler: false,
       classTransformer: false,

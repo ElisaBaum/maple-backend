@@ -1,13 +1,11 @@
-import {Get, JsonController, Post, Req, Body, Patch, Param, OnUndefined, UseBefore} from "routing-controllers";
+import {Get, JsonController, Post, Req, Body, Patch, Param, OnUndefined} from "routing-controllers";
 import {Inject} from "di-typescript";
-import {AuthMiddleware} from "../authentication/AuthMiddleware";
 import {Request} from "express";
 import {AuthenticationService} from "../authentication/AuthenticationService";
 import {UserService} from "./UserService";
 
 @Inject
 @JsonController()
-@UseBefore(AuthMiddleware)
 export class UserController {
 
   constructor(protected authService: AuthenticationService,
