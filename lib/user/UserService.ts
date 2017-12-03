@@ -13,45 +13,37 @@ export class UserService {
     })
   }
 
-  async createCompanion(userId: number, companion: any) {
-    const user = await User.findByPrimary<User>(userId, {
-      include: [{
-        model: Party,
-        include: [User]
-      }]
+  async getParty(partyId: number) {
+    return Party.findByPrimary<Party>(partyId, {
+      include: [User]
     });
-
-    if (user) {
-      const {party} = user;
-
-      if (party) {
-        if (party.users.length < party.maxPersonCount) {
-          const newUser = new User({
-            name: companion.name,
-            partyId: party.id,
-            relationKey: 'plus-one'
-          });
-
-          return (await newUser.save()).copy(defaultAttributes);
-        }
-
-        throw new MaxCompanionCountExceededError();
-      }
-
-      throw new PartyNotFoundError();
-    }
-
-    throw new UserNotFoundError();
   }
 
-  async updateCompanionPartially(userId: number, companionId: number, companion: any) {
+  async createCompanion(partyId: number, companion: any) {
+    const party = await this.getParty(partyId);
+
+    if (party) {
+      if (party.users.length < party.maxPersonCount) {
+        const newUser = new User({
+          name: companion.name,
+          partyId: partyId,
+          relationKey: 'plus-one'
+        });
+
+        return (await newUser.save()).copy(defaultAttributes);
+      }
+
+      throw new MaxCompanionCountExceededError();
+    }
+
+    throw new PartyNotFoundError();
+  }
+
+  async updateCompanionPartially(partyId: number, companionId: number, companion: any) {
     const user = await User.findByPrimary<User>(companionId, {
       include: [{
         model: Party,
-        include: [{
-          model: User,
-          where: {id: userId}
-        }]
+        where: {id: partyId}
       }]
     });
 

@@ -40,8 +40,8 @@ export class AuthenticationService {
     throw new UnauthorizedError();
   }
 
-  private convertUserToAuthUser({id, name, scopes}: User): AuthUser {
-    return {id, name, scopes};
+  private convertUserToAuthUser({id, partyId, name, scopes}: User): AuthUser {
+    return {id, partyId, name, scopes};
   }
 
 }

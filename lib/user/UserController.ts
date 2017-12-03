@@ -25,17 +25,23 @@ export class UserController {
     return this.userService.updateUserPartially(userId, user);
   }
 
+  @Get('/users/me/party')
+  async getParty(@Req() req: Request) {
+    const partyId = req.user.partyId;
+    return this.userService.getParty(partyId);
+  }
+
   @Post('/users/me/companions')
   async addCompanion(@Req() req: Request, @Body() companion: any) {
-    const userId = req.user.id;
-    return this.userService.createCompanion(userId, companion);
+    const partyId = req.user;
+    return this.userService.createCompanion(partyId, companion);
   }
 
   @OnUndefined(200)
   @Patch('/users/me/companions/:companionId')
   async updateCompanionPartially(@Req() req: Request, @Param('companionId') companionId: number, @Body() companion: any) {
-    const userId = req.user.id;
-    return this.userService.updateCompanionPartially(userId, companionId, companion);
+    const partyId = req.user.partyId;
+    return this.userService.updateCompanionPartially(partyId, companionId, companion);
   }
 
 }

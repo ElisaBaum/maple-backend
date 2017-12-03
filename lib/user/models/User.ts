@@ -2,7 +2,7 @@ import {Table, Column, Model, BelongsTo, ForeignKey, DataType, DefaultScope} fro
 import {Party} from "./Party";
 import {Relation} from "./Relation";
 
-export const defaultAttributes = ['id', 'name', 'scopes'];
+export const defaultAttributes = ['id', 'partyId', 'name', 'scopes'];
 
 @DefaultScope({attributes: defaultAttributes})
 @Table
