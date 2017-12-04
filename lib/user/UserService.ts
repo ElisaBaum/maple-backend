@@ -43,7 +43,8 @@ export class UserService {
     const user = await User.findByPrimary<User>(companionId, {
       include: [{
         model: Party,
-        where: {id: partyId}
+        where: {id: partyId},
+        required: true,
       }]
     });
 

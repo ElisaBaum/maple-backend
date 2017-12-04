@@ -33,7 +33,7 @@ export class UserController {
 
   @Post('/users/me/companions')
   async addCompanion(@Req() req: Request, @Body() companion: any) {
-    const partyId = req.user;
+    const {partyId} = req.user;
     return this.userService.createCompanion(partyId, companion);
   }
 
