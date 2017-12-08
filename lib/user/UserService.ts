@@ -6,8 +6,8 @@ import {PartyNotFoundError} from "./errors/PartyNotFoundError";
 
 export class UserService {
 
-  async updateUserPartially(userId: number, user: any) {
-    await User.update(user, {
+  async updateUserPartially(userId: number, partialUser: Partial<User>) {
+    await User.update(partialUser, {
       where: {id: userId},
       fields: ['name', 'email', 'phone', 'accepted']
     })
@@ -19,14 +19,17 @@ export class UserService {
     });
   }
 
-  async createCompanion(partyId: number, companion: any) {
+  async createCompanion(partyId: number, partialUser: Partial<User> & {name: string}) {
     const party = await this.getParty(partyId);
 
     if (party) {
       if (party.users.length < party.maxPersonCount) {
+        // todo: set scope?
+
         const newUser = new User({
-          name: companion.name,
+          name: partialUser.name,
           partyId: partyId,
+          accepted: true,
           relationKey: 'plus-one'
         });
 
@@ -39,7 +42,10 @@ export class UserService {
     throw new PartyNotFoundError();
   }
 
-  async updateCompanionPartially(partyId: number, companionId: number, companion: any) {
+  async updateCompanionPartially(partyId: number,
+                                 companionId: number,
+                                 partialUser: Partial<User> & {accepted: boolean}) {
+
     const user = await User.findByPrimary<User>(companionId, {
       include: [{
         model: Party,
@@ -49,7 +55,7 @@ export class UserService {
     });
 
     if (user) {
-      await user.update(companion, {
+      await user.update(partialUser, {
         fields: ['accepted']
       });
     } else {
