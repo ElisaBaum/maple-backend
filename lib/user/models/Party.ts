@@ -1,6 +1,7 @@
-import {Table, Column, Model, HasMany} from 'sequelize-typescript';
+import {Table, Column, Model, HasMany, DefaultScope} from 'sequelize-typescript';
 import {User} from "./User";
 
+@DefaultScope({attributes: ['id', 'maxPersonCount']})
 @Table
 export class Party extends Model<Party> {
 

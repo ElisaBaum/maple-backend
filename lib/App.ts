@@ -24,6 +24,7 @@ export class App {
       middlewares: [AuthMiddleware],
       cors: true,
       defaultErrorHandler: false,
+      classTransformer: false,
     });
 
     this._expressApp.use(errorhandler({

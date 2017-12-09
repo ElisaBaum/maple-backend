@@ -1,7 +1,10 @@
-import {Table, Column, Model, BelongsTo, ForeignKey, DataType} from 'sequelize-typescript';
+import {Table, Column, Model, BelongsTo, ForeignKey, DataType, DefaultScope} from 'sequelize-typescript';
 import {Party} from "./Party";
 import {Relation} from "./Relation";
 
+export const defaultAttributes = ['id', 'partyId', 'name', 'scopes', 'accepted'];
+
+@DefaultScope({attributes: defaultAttributes})
 @Table
 export class User extends Model<User> {
 
@@ -43,4 +46,10 @@ export class User extends Model<User> {
   @BelongsTo(() => Relation)
   relation: Relation;
 
+  copy(attributes: string[]) {
+    return new User(attributes.reduce((values, key) => {
+      values[key] = this[key];
+      return values;
+    }, {}));
+  }
 }
