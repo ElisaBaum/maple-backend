@@ -5,4 +5,4 @@
 --full-trace
 --bail
 
-test/specs/**/*.ts
+lib/**/*.spec.ts

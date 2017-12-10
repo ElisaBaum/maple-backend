@@ -9,17 +9,13 @@ import {AuthMiddleware} from "./authentication/AuthMiddleware";
 @Inject
 export class App {
 
-  private _expressApp: Application;
-
-  get expressApp(): Application {
-    return this._expressApp;
-  }
+  private expressApp: Application;
 
   constructor(protected sequelize: Sequelize) {
 
     useContainer(injector);
 
-    this._expressApp = createExpressServer({
+    this.expressApp = createExpressServer({
       controllers: [__dirname + "/**/*Controller.ts"],
       middlewares: [AuthMiddleware],
       cors: true,
@@ -27,10 +23,18 @@ export class App {
       classTransformer: false,
     });
 
-    this._expressApp.use(errorhandler({
+    this.expressApp.use(errorhandler({
       debug: process.env.ENV !== 'prod',
       log: true,
     }));
+  }
+
+  getExpressApp() {
+    return this.expressApp;
+  }
+
+  getSequelize() {
+    return this.sequelize;
   }
 
 }

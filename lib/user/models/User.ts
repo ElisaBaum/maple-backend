@@ -32,6 +32,12 @@ export class User extends Model<User> {
   @Column
   visibleForOthers: boolean;
 
+  @Column
+  lockedUntil: Date;
+
+  @Column
+  failedAuthAttempts: number;
+
   @ForeignKey(() => Party)
   @Column({unique: 'userPartyIndex'})
   partyId: number;
@@ -51,5 +57,9 @@ export class User extends Model<User> {
       values[key] = this[key];
       return values;
     }, {}));
+  }
+
+  isLocked() {
+    return this.lockedUntil && (this.lockedUntil > new Date());
   }
 }

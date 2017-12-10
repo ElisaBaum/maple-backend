@@ -1,7 +1,7 @@
 import {Injector} from "di-typescript";
-import {sequelize} from "./sequelize";
-import {Sequelize} from "sequelize-typescript";
+import {Sequelize as SequelizeTypeScript} from "sequelize-typescript";
+import {sequelizeFactory} from "./sequelizeFactory";
 
 export const injector = new Injector([
-  {provide: Sequelize, useValue: sequelize}
+  {provide: SequelizeTypeScript, useFactory: sequelizeFactory}
 ]);

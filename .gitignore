@@ -12,5 +12,9 @@ node_modules
 *.js
 *.js.map
 
+# test
+.nyc_output
+coverage
+
 # migrations
 !migrations/*.js
