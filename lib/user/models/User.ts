@@ -8,7 +8,7 @@ export const defaultAttributes = ['id', 'partyId', 'name', 'scopes', 'accepted']
 @Table
 export class User extends Model<User> {
 
-  @Column({unique: 'userPartyIndex'})
+  @Column
   name: string;
 
   @Column
@@ -39,7 +39,7 @@ export class User extends Model<User> {
   failedAuthAttempts: number;
 
   @ForeignKey(() => Party)
-  @Column({unique: 'userPartyIndex'})
+  @Column
   partyId: number;
 
   @BelongsTo(() => Party)

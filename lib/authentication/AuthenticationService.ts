@@ -29,7 +29,7 @@ export class AuthenticationService {
     if (name && code) {
       const user = await User.unscoped().findOne({
         include: [{
-          model: Party,
+          model: Party.unscoped(),
         }],
         where: {name}
       });

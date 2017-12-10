@@ -8,9 +8,10 @@ export const config = {
     dialect: process.env.DB_DIALECT || 'postgres',
     username: process.env.DB_USERNAME as string,
     password: process.env.DB_PWD as string,
+    logging: process.env.DB_LOGGING === 'true'
   },
   auth: {
-    maxFailedAttempts: parseFloat(process.env.AUTH_MAX_FAILED_ATTEMPTS || '6'),
+    maxFailedAttempts: parseFloat(process.env.AUTH_MAX_FAILED_ATTEMPTS || '5'),
     lockingTime: parseFloat(process.env.AUTH_LOCKING_TIME || '0') || minutes(15),
     jwt: {
       secret: process.env.JWT_SECRET as string,
