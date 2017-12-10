@@ -7,7 +7,7 @@ export class DynamicContentController {
 
   @Get('/dynamic-content/:key')
   async getDynamicContent(@Param('key') key: string) {
-    const dynamicContent = await DynamicContent.findByPrimary<DynamicContent<any>>(key);
+    const dynamicContent = await DynamicContent.findByPrimary(key);
 
     if (dynamicContent) {
       return dynamicContent.toJSON();

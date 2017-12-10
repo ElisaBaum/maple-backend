@@ -14,7 +14,7 @@ export class UserService {
   }
 
   async getParty(partyId: number) {
-    return Party.findByPrimary<Party>(partyId, {
+    return Party.findByPrimary(partyId, {
       include: [User]
     });
   }
@@ -46,7 +46,7 @@ export class UserService {
                                  companionId: number,
                                  partialUser: Partial<User> & {accepted: boolean}) {
 
-    const user = await User.findByPrimary<User>(companionId, {
+    const user = await User.findByPrimary(companionId, {
       include: [{
         model: Party,
         where: {id: partyId},
