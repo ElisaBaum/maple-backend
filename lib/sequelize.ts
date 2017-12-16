@@ -10,6 +10,7 @@ export const sequelize = new Sequelize({
   modelPaths: [
     __dirname + '/user/models',
     __dirname + '/dynamic-content/models',
+    __dirname + '/room-reservation/models',
   ],
   dialectOptions: {
     ssl: true
