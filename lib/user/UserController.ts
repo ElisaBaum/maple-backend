@@ -4,6 +4,7 @@ import {Request} from "express";
 import {AuthenticationService} from "../authentication/AuthenticationService";
 import {UserService} from "./UserService";
 import {User} from "./models/User";
+import {OK} from 'http-status-codes';
 
 @Inject
 @JsonController()
@@ -19,7 +20,7 @@ export class UserController {
     return {token: this.authService.createJWToken(req.user)};
   }
 
-  @OnUndefined(200)
+  @OnUndefined(OK)
   @Patch('/users/me')
   async updateUserPartially(@Req() req: Request, @Body() user: Partial<User>) {
     const userId = req.user.id;
@@ -38,7 +39,7 @@ export class UserController {
     return this.userService.createCompanion(partyId, companion);
   }
 
-  @OnUndefined(200)
+  @OnUndefined(OK)
   @Patch('/users/me/companions/:companionId')
   async updateCompanionPartially(@Req() req: Request,
                                  @Param('companionId') companionId: number,

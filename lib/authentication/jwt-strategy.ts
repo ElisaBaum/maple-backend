@@ -1,10 +1,12 @@
 import {AuthenticationService} from "./AuthenticationService";
 import {ExtractJwt, Strategy, VerifiedCallback} from "passport-jwt";
+import {config} from '../config';
 
 export function jwtStrategy(authService: AuthenticationService): any {
+  const {issuer, secret} = config.auth.jwt;
   return new Strategy({
-    issuer: process.env.JWT_ISSUER as string,
-    secretOrKey: process.env.JWT_SECRET as string,
+    issuer,
+    secretOrKey: secret,
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer')
   }, (payload: any, done: VerifiedCallback) => {
     done(null, authService.getUserFromJWTPayload(payload));
