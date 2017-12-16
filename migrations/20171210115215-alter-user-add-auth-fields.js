@@ -18,8 +18,10 @@ exports.up = (db) => {
 
   return db.runSql(`
     ALTER TABLE "User" 
-      ADD COLUMN lockedUntil TIMESTAMP,
-      ADD COLUMN failedAuthAttempts integer
+      DROP CONSTRAINT "User_name_partyId_key",
+      ADD CONSTRAINT "User_name_key" UNIQUE (name),
+      ADD COLUMN "lockedUntil" TIMESTAMP,
+      ADD COLUMN "failedAuthAttempts" integer
       ;
   `);
 };
@@ -27,8 +29,9 @@ exports.up = (db) => {
 exports.down = (db) => {
   return db.runSql(`
     ALTER TABLE "User" 
-      DROP COLUMN lockedUntil,
-      DROP COLUMN failedAuthAttempts
+      ADD CONSTRAINT "User_name_partyId_key" UNIQUE (name, "partyId"),
+      DROP COLUMN "lockedUntil",
+      DROP COLUMN "failedAuthAttempts"
       ;
   `);
 };
