@@ -71,6 +71,7 @@
     "@types/passport": "^0.3.5",
     "@types/passport-http": "^0.3.3",
     "@types/passport-jwt": "^3.0.0",
+    "aws-sdk": "^2.175.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "di-typescript": "^1.1.4",

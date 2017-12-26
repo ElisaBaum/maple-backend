@@ -1,0 +1,57 @@
+import {expect} from 'chai';
+import * as request from 'supertest';
+import {App} from '../App';
+import {AuthenticationService} from '../authentication/AuthenticationService';
+import {OK} from 'http-status-codes';
+import {injector} from '../injector';
+import {DynamicContent} from './models/DynamicContent';
+
+describe('routes.dynamic-content', () => {
+
+  const app = injector.get(App);
+  const authService = injector.get(AuthenticationService);
+  const expressApp = app.getExpressApp();
+  const sequelize = app.getSequelize();
+  const createAuthToken = () => authService.createJWToken({id: 1, name: '', partyId: 1});
+
+  const baseURL = `/dynamic-content`;
+
+  beforeEach(() => sequelize.sync({force: true}));
+
+  let method = 'get';
+  let url = `${baseURL}/`;
+
+  describe(`${method.toUpperCase()} ${url}/:key`, () => {
+
+    it(`should return jwt token with status ${OK} by jwt`, async () => {
+      const dynamicContent = await DynamicContent.create({
+        key: 'test',
+        content: {
+          headerImg: 'IMG_A',
+          sub: {
+            images: 'IMG_AA',
+          },
+        },
+        resources: {
+          IMG_A: 'a.jpg',
+          IMG_AA: ['b.jpg', 'c.jpg'],
+        },
+      });
+      const {body} = await request(expressApp)[method](`${url}${dynamicContent.key}`)
+        .set('Authorization', `Bearer ${createAuthToken()}`)
+        .expect(OK);
+
+      const {content} = body;
+      expect(content).to.have.property('headerImg').that.matches(/https:\/\/.*a\.jpg/);
+      expect(content).to.have.property('sub')
+        .that.have.property('images')
+        .that.is.an('array')
+      ;
+      expect(content.sub.images[0]).to.match(/https:\/\/.*b\.jpg/);
+      expect(content.sub.images[1]).to.match(/https:\/\/.*c\.jpg/);
+    });
+
+
+  });
+
+});

@@ -1,4 +1,4 @@
-import {BadRequestError} from "../../common/BadRequestError";
+import {BadRequestError} from "../../common/errors/BadRequestError";
 
 export class MaxCompanionCountExceededError extends BadRequestError {
 
