@@ -8,15 +8,15 @@ export class S3Service {
   }
 
   getSignedUrl(operation, params: any): Promise<string> {
-      return new Promise((resolve, reject) => {
-        this.s3.getSignedUrl(operation, params, (err, url) => {
-          if(err) {
-            reject(err);
-          } else {
-            resolve(url);
-          }
-        })
+    return new Promise((resolve, reject) => {
+      this.s3.getSignedUrl(operation, params, (err, url) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(url);
+        }
       });
+    });
   }
 
 }

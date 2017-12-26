@@ -22,8 +22,8 @@ describe('routes.users', () => {
 
   beforeEach(() => sequelize.sync({force: true}));
 
-  let method = 'get';
-  let url = `${baseURL}/me/token`;
+  const method = 'get';
+  const url = `${baseURL}/me/token`;
 
   describe(`${method.toUpperCase()} ${url}`, () => {
 
@@ -69,10 +69,10 @@ describe('routes.users', () => {
     it(`should return Unauthorized with status ${UNAUTHORIZED} due to too many failed attempts`, async () => {
       const userData: RecursivePartial<User> = {name: 'elisa', party: {code: 'abc'}};
       const {name, party: {code}} = await User.create(userData, {include: [Party.unscoped()]});
-      const requestWithWrongPassword = async () => await request(expressApp)[method](url)
+      const requestWithWrongPassword = () => request(expressApp)[method](url)
         .set('Authorization', `Basic ${toBase64(`${name}:wrong-password`)}`);
 
-      for(let i = 0; i < config.auth.maxFailedAttempts; i++) {
+      for (let i = 0; i < config.auth.maxFailedAttempts; i++) {
         await requestWithWrongPassword();
       }
 
