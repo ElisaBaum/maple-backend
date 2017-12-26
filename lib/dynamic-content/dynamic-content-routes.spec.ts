@@ -23,7 +23,7 @@ describe('routes.dynamic-content', () => {
 
   describe(`${method.toUpperCase()} ${url}/:key`, () => {
 
-    it(`should return jwt token with status ${OK} by jwt`, async () => {
+    it(`should return content with prepared content`, async () => {
       const dynamicContent = await DynamicContent.create({
         key: 'test',
         content: {
@@ -49,6 +49,18 @@ describe('routes.dynamic-content', () => {
       ;
       expect(content.sub.images[0]).to.match(/https:\/\/.*b\.jpg/);
       expect(content.sub.images[1]).to.match(/https:\/\/.*c\.jpg/);
+    });
+
+    it(`should return content even if content do not have resources`, async () => {
+      const dynamicContent = await DynamicContent.create({
+        key: 'test',
+        content: {},
+      });
+      const {body} = await request(expressApp)[method](`${url}${dynamicContent.key}`)
+        .set('Authorization', `Bearer ${createAuthToken()}`)
+        .expect(OK);
+
+      expect(body).to.be.an('object')
     });
 
 
