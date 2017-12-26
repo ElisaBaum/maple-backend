@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import * as request from 'supertest';
 import {App} from '../App';
 import {AuthenticationService} from '../authentication/AuthenticationService';
-import {OK} from 'http-status-codes';
+import {NOT_FOUND, OK} from 'http-status-codes';
 import {injector} from '../injector';
 import {DynamicContent} from './models/DynamicContent';
 
@@ -63,6 +63,11 @@ describe('routes.dynamic-content', () => {
       expect(body).to.be.an('object')
     });
 
+    it(`should return ${NOT_FOUND}`, async () => {
+      await request(expressApp)[method](`${url}${'blabla'}`)
+        .set('Authorization', `Bearer ${createAuthToken()}`)
+        .expect(NOT_FOUND);
+    });
 
   });
 
