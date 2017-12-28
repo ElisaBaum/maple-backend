@@ -18,16 +18,13 @@ export class DynamicContentService {
   }
 
   private async prepareDynamicContent(dynamicContent: DynamicContent<any>) {
-    return await Promise.all(Object
+    return Promise.all(Object
       .keys(dynamicContent.resources)
       .map(async key => {
         const resources = dynamicContent.resources[key];
-        let urls;
-        if (Array.isArray(resources)) {
-          urls = await this.getSignedUrls(resources);
-        } else {
-          urls = await this.getSignedUrl(resources);
-        }
+        const urls = Array.isArray(resources)
+          ? await this.getSignedUrls(resources)
+          : await this.getSignedUrl(resources);
         this.replaceWithSignedUrls(key, urls, dynamicContent.content);
       }));
   }
@@ -41,14 +38,14 @@ export class DynamicContentService {
         content[key] = urls;
       }
     });
-  };
+  }
 
   private async getSignedUrls(resources: string[]) {
-    return await Promise.all(resources.map(resource => this.getSignedUrl(resource)));
+    return Promise.all(resources.map(resource => this.getSignedUrl(resource)));
   }
 
   private async getSignedUrl(resource: string) {
-    return await this.s3Service.getSignedUrl('getObject', {
+    return this.s3Service.getSignedUrl('getObject', {
       Bucket: config.aws.s3.bucket,
       Key: resource,
       Expires: config.aws.s3.signedUrlExpirationTime,
