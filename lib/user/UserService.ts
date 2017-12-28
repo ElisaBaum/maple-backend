@@ -10,7 +10,7 @@ export class UserService {
     await User.update(partialUser, {
       where: {id: userId},
       fields: ['name', 'email', 'phone', 'accepted']
-    })
+    });
   }
 
   async getParty(partyId: number) {
@@ -27,8 +27,8 @@ export class UserService {
         // todo: set scope?
 
         const newUser = new User({
+          partyId,
           name: partialUser.name,
-          partyId: partyId,
           accepted: true,
           relationKey: 'plus-one'
         });

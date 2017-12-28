@@ -8,20 +8,22 @@
     "migrate-down": "db-migrate down -c 1 --config migrations-config.json -e db",
     "create-migration": "db-migrate create --config migrations-config.json -e db",
     "build": "tsc",
+    "lint": "tslint ./lib/**/*.ts",
     "test": "mocha",
     "cover": "nyc mocha"
   },
   "nyc": {
-    "lines": 85,
-    "statements": 85,
-    "functions": 85,
-    "branches": 85,
+    "lines": 50,
+    "statements": 50,
+    "functions": 50,
+    "branches": 50,
     "include": [
       "lib"
     ],
     "exclude": [
       "lib/server.ts",
-      "lib/injector.ts"
+      "lib/injector.ts",
+      "lib/**/*.spec.ts"
     ],
     "extension": [
       ".ts"
@@ -59,7 +61,8 @@
     "nyc": "^11.3.0",
     "source-map-support": "^0.5.0",
     "sqlite3": "^3.1.13",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "tslint": "^5.8.0"
   },
   "dependencies": {
     "@etianen/base-error": "^0.2.1",

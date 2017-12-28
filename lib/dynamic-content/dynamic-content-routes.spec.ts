@@ -18,8 +18,8 @@ describe('routes.dynamic-content', () => {
 
   beforeEach(() => sequelize.sync({force: true}));
 
-  let method = 'get';
-  let url = `${baseURL}/`;
+  const method = 'get';
+  const url = `${baseURL}/`;
 
   describe(`${method.toUpperCase()} ${url}/:key`, () => {
 
@@ -60,7 +60,7 @@ describe('routes.dynamic-content', () => {
         .set('Authorization', `Bearer ${createAuthToken()}`)
         .expect(OK);
 
-      expect(body).to.be.an('object')
+      expect(body).to.be.an('object');
     });
 
     it(`should return ${NOT_FOUND}`, async () => {
