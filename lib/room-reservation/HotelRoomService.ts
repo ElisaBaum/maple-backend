@@ -28,9 +28,9 @@ export class HotelRoomService {
     if (hotelRoom) {
       await PartyHotelRoom.upsert({hotelRoomId, partyId});
       return hotelRoom;
-    } else {
-      throw new HotelRoomNotFoundError();
     }
+
+    throw new HotelRoomNotFoundError();
   }
 
   async deleteHotelRoomReservation(partyId) {
