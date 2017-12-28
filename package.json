@@ -85,7 +85,7 @@
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
     "passport-jwt": "^3.0.1",
-    "pg": "^7.3.0",
+    "pg": "^6.4.2",
     "reflect-metadata": "^0.1.10",
     "routing-controllers": "^0.7.6",
     "sequelize": "^4.20.1",
