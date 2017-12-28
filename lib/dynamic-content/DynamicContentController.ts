@@ -1,13 +1,19 @@
 import {Get, JsonController, Param} from "routing-controllers";
-import {DynamicContent} from "./models/DynamicContent";
-import {NotFoundError} from "../common/NotFoundError";
+import {NotFoundError} from "../common/errors/NotFoundError";
+import {DynamicContentService} from './DynamicContentService';
+import {Inject} from 'di-typescript';
 
+@Inject
 @JsonController()
 export class DynamicContentController {
 
+  constructor(private dynamicContentService: DynamicContentService) {
+
+  }
+
   @Get('/dynamic-content/:key')
   async getDynamicContent(@Param('key') key: string) {
-    const dynamicContent = await DynamicContent.findByPrimary(key);
+    const dynamicContent = await this.dynamicContentService.getDynamicContent(key);
 
     if (dynamicContent) {
       return dynamicContent.toJSON();
