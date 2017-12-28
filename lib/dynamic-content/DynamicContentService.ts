@@ -12,22 +12,12 @@ export class DynamicContentService {
   async getDynamicContent(key: string) {
     const dynamicContent = await DynamicContent.findByPrimary(key);
     if (dynamicContent && dynamicContent.resources) {
-      await this.setSignedUrlsToDynamicContent(dynamicContent);
+      await this.prepareDynamicContent(dynamicContent);
     }
     return dynamicContent;
   }
 
-  private async setSignedUrlsToDynamicContent(dynamicContent: DynamicContent<any>) {
-    const setUrls = (targetKey, urls, content) => {
-      Object.keys(content).forEach(key => {
-        const value = content[key];
-        if (value && typeof value === 'object') {
-          setUrls(targetKey, urls, value);
-        } else if (content[key] === targetKey) {
-          content[key] = urls;
-        }
-      });
-    };
+  private async prepareDynamicContent(dynamicContent: DynamicContent<any>) {
     return await Promise.all(Object
       .keys(dynamicContent.resources)
       .map(async key => {
@@ -38,9 +28,20 @@ export class DynamicContentService {
         } else {
           urls = await this.getSignedUrl(resources);
         }
-        setUrls(key, urls, dynamicContent.content);
+        this.replaceWithSignedUrls(key, urls, dynamicContent.content);
       }));
   }
+
+  private replaceWithSignedUrls(targetKey, urls, content) {
+    Object.keys(content).forEach(key => {
+      const value = content[key];
+      if (value && typeof value === 'object') {
+        this.replaceWithSignedUrls(targetKey, urls, value);
+      } else if (content[key] === targetKey) {
+        content[key] = urls;
+      }
+    });
+  };
 
   private async getSignedUrls(resources: string[]) {
     return await Promise.all(resources.map(resource => this.getSignedUrl(resource)));
