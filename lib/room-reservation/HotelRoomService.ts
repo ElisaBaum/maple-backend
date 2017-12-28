@@ -16,7 +16,7 @@ export class HotelRoomService {
       include: [HotelRoom]
     });
 
-     if (reservedRoom) {
+    if (reservedRoom) {
       return reservedRoom.hotelRoom;
     }
 
@@ -26,8 +26,8 @@ export class HotelRoomService {
   async reserveHotelRoom(partyId: number, hotelRoomId: number) {
     const hotelRoom = await HotelRoom.findByPrimary(hotelRoomId);
     if (hotelRoom) {
-        await PartyHotelRoom.upsert({hotelRoomId, partyId});
-        return hotelRoom;
+      await PartyHotelRoom.upsert({hotelRoomId, partyId});
+      return hotelRoom;
     } else {
       throw new HotelRoomNotFoundError();
     }
@@ -38,7 +38,7 @@ export class HotelRoomService {
       where: {
         partyId
       }
-    })
+    });
   }
 
 }
