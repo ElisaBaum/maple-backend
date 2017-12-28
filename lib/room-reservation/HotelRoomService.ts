@@ -34,11 +34,15 @@ export class HotelRoomService {
   }
 
   async deleteHotelRoomReservation(partyId) {
-    await PartyHotelRoom.destroy({
+    const affectedRows = await PartyHotelRoom.destroy({
       where: {
         partyId
       }
     });
+
+    if (!affectedRows) {
+      throw new HotelRoomNotFoundError();
+    }
   }
 
 }

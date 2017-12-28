@@ -35,7 +35,7 @@
     ],
     "sourceMap": true,
     "instrument": true,
-    "cache": true,
+    "cache": false,
     "all": true,
     "check-coverage": true,
     "report-dir": "./coverage"

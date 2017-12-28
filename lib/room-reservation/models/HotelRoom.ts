@@ -1,4 +1,6 @@
-import {Table, Model, Column, DefaultScope} from 'sequelize-typescript';
+import {Table, Model, Column, DefaultScope, BelongsToMany} from 'sequelize-typescript';
+import {Party} from "../../user/models/Party";
+import {PartyHotelRoom} from "./PartyHotelRoom";
 
 @DefaultScope({
   order: [
@@ -16,4 +18,7 @@ export class HotelRoom extends Model<HotelRoom> {
 
   @Column
   maxPersonCount: number;
+
+  @BelongsToMany(() => Party, () => PartyHotelRoom)
+  parties: Party[];
 }
