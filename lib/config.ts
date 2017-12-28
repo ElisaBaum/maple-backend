@@ -10,9 +10,21 @@ export const config = {
     password: process.env.DB_PWD as string,
     logging: process.env.DB_LOGGING === 'true'
   },
+  aws: {
+    config: {
+      accessKeyId: process.env.AWS_ACCESS_KEY as string,
+      secretAccessKey: process.env.AWS_SECRET_KEY as string,
+      signatureVersion: 'v4',
+      region: 'eu-central-1',
+    },
+    s3: {
+      bucket: 'maple-backend',
+      signedUrlExpirationTime: minutes(5).inSeconds(),
+    },
+  },
   auth: {
     maxFailedAttempts: parseFloat(process.env.AUTH_MAX_FAILED_ATTEMPTS || '5'),
-    lockingTime: parseFloat(process.env.AUTH_LOCKING_TIME || '0') || minutes(15),
+    lockingTime: parseFloat(process.env.AUTH_LOCKING_TIME || '0') || minutes(15).inMs(),
     jwt: {
       secret: process.env.JWT_SECRET as string,
       issuer: process.env.JWT_ISSUER as string,

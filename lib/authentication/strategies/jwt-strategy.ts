@@ -1,6 +1,6 @@
-import {AuthenticationService} from "./AuthenticationService";
+import {AuthenticationService} from "../AuthenticationService";
 import {ExtractJwt, Strategy, VerifiedCallback} from "passport-jwt";
-import {config} from '../config';
+import {config} from '../../config';
 
 export function jwtStrategy(authService: AuthenticationService): any {
   const {issuer, secret} = config.auth.jwt;

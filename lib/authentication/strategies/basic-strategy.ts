@@ -1,5 +1,5 @@
 import {BasicStrategy} from "passport-http";
-import {AuthenticationService} from "./AuthenticationService";
+import {AuthenticationService} from "../AuthenticationService";
 
 export function basicStrategy(authService: AuthenticationService): any {
   return new BasicStrategy(async (nameOrEmail, codeOrPassword, done) => {
