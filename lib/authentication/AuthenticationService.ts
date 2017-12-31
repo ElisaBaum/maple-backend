@@ -6,6 +6,7 @@ import {UnauthorizedError} from "./UnauthorizedError";
 import {AuthUser} from "./AuthUser";
 import {config} from '../config';
 import {addMs} from '../utils/date';
+import {randomBytes} from 'crypto';
 
 @Inject
 export class AuthenticationService {
@@ -16,9 +17,14 @@ export class AuthenticationService {
     return this.convertUserToAuthUser(user);
   }
 
-  createJWToken(user: AuthUser): string {
+  createJWToken(payload: {user: AuthUser; [key: string]: any}): string {
     const {secret, issuer, expiresIn} = config.auth.jwt;
-    return jwt.sign({user}, secret, {issuer, expiresIn});
+    return jwt.sign({...payload}, secret, {issuer, expiresIn});
+  }
+
+  createCSRFToken() {
+    const BYTES = 32;
+    return randomBytes(BYTES).toString('hex');
   }
 
   getUserFromJWTPayload(payload: { user: AuthUser }): AuthUser {

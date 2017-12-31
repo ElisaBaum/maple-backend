@@ -52,6 +52,7 @@
   "homepage": "https://github.com/ElisaBaum/maple-backend#readme",
   "devDependencies": {
     "@types/chai": "^4.0.8",
+    "@types/cookie-parser": "^1.4.1",
     "@types/mocha": "^2.2.44",
     "@types/supertest": "^2.0.4",
     "chai": "^4.1.2",
@@ -76,6 +77,7 @@
     "@types/passport-jwt": "^3.0.0",
     "aws-sdk": "^2.175.0",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "di-typescript": "^1.1.4",
     "express": "^4.16.2",

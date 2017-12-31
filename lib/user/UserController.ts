@@ -1,7 +1,6 @@
 import {Get, JsonController, Post, Req, Body, Patch, Param, OnUndefined} from "routing-controllers";
 import {Inject} from "di-typescript";
 import {Request} from "express";
-import {AuthenticationService} from "../authentication/AuthenticationService";
 import {UserService} from "./UserService";
 import {User} from "./models/User";
 import {OK} from 'http-status-codes';
@@ -10,14 +9,7 @@ import {OK} from 'http-status-codes';
 @JsonController()
 export class UserController {
 
-  constructor(protected authService: AuthenticationService,
-              protected userService: UserService) {
-
-  }
-
-  @Get('/users/me/token')
-  getUserToken(@Req() req: Request) {
-    return {token: this.authService.createJWToken(req.user)};
+  constructor(protected userService: UserService) {
   }
 
   @OnUndefined(OK)

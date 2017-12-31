@@ -1,6 +1,7 @@
 import {minutes} from './utils/date';
 
 export const config = {
+  environment: process.env.ENV || 'dev',
   database: {
     host: process.env.DB_HOST as string,
     port: 5432,
@@ -25,7 +26,9 @@ export const config = {
   auth: {
     maxFailedAttempts: parseFloat(process.env.AUTH_MAX_FAILED_ATTEMPTS || '5'),
     lockingTime: parseFloat(process.env.AUTH_LOCKING_TIME || '0') || minutes(15).inMs(),
+    csrfTokenHeaderKey: process.env.CSRF_TOKEN_HEADER_KEY || 'x-csrf-token',
     jwt: {
+      cookieKey: process.env.JWT_COOKIE_KEY || 'jwt',
       secret: process.env.JWT_SECRET as string,
       issuer: process.env.JWT_ISSUER as string,
       expiresIn: process.env.JWT_EXP as string,
