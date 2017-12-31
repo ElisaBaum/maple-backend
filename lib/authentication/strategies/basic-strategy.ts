@@ -9,5 +9,5 @@ export function basicStrategy(authService: AuthenticationService): any {
     } catch (e) {
       done(e);
     }
-  })
+  });
 }
