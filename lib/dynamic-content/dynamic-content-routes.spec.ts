@@ -12,9 +12,9 @@ describe('routes.dynamic-content', () => {
   const authService = injector.get(AuthenticationService);
   const expressApp = app.getExpressApp();
   const sequelize = app.getSequelize();
-  const createAuthToken = () => authService.createJWToken({id: 1, name: '', partyId: 1});
+  const createAuthToken = () => authService.createJWToken({user: {id: 1, name: '', partyId: 1}});
 
-  const baseURL = `/dynamic-content`;
+  const baseURL = `/api/dynamic-content`;
 
   beforeEach(() => sequelize.sync({force: true}));
 

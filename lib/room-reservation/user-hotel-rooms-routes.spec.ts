@@ -13,9 +13,9 @@ describe('routes.user-hotel-rooms', () => {
   const authService = injector.get(AuthenticationService);
   const expressApp = app.getExpressApp();
   const sequelize = app.getSequelize();
-  const createAuthToken = (partyId) => authService.createJWToken({id: 1, name: '', partyId});
+  const createAuthToken = (partyId) => authService.createJWToken({user: {id: 1, name: '', partyId}});
 
-  const baseURL = `/users/me/hotel-rooms`;
+  const baseURL = `/api/users/me/hotel-rooms`;
 
   beforeEach(() => sequelize.sync({force: true}));
 
