@@ -10,5 +10,5 @@ export function jwtStrategy(authService: AuthenticationService): any {
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer')
   }, (payload: any, done: VerifiedCallback) => {
     done(null, authService.getUserFromJWTPayload(payload));
-  })
+  });
 }
