@@ -91,7 +91,7 @@
     "reflect-metadata": "^0.1.10",
     "routing-controllers": "^0.7.6",
     "sequelize": "^4.20.1",
-    "sequelize-typescript": "^0.6.1",
+    "sequelize-typescript": "^0.6.2",
     "strong-error-handler": "^2.3.0",
     "ts-node": "^3.3.0",
     "typescript": "^2.5.3"

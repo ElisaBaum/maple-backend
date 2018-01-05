@@ -1,16 +1,16 @@
 import {Column, ForeignKey, Model, Table} from "sequelize-typescript";
 import {User} from "../../user/models/User";
-import {Artist} from "./Artist";
+import {RequestedSong} from "./RequestedSong";
 
 @Table
-export class UserArtist extends Model<UserArtist> {
+export class UserRequestedSong extends Model<UserRequestedSong> {
 
   @ForeignKey(() => User)
   @Column
   userId: number;
 
-  @ForeignKey(() => Artist)
+  @ForeignKey(() => RequestedSong)
   @Column
-  artistId: number;
+  songId: number;
 
 }

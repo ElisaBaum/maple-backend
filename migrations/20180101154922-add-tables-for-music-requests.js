@@ -17,7 +17,7 @@ exports.setup = function(options, seedLink) {
 exports.up = (db) => {
 
   return db.runSql(`
-    CREATE TABLE "Artist"
+    CREATE TABLE "RequestedArtist"
     (
         id SERIAL NOT NULL,
         name character varying(255) NOT NULL,
@@ -27,7 +27,7 @@ exports.up = (db) => {
         CONSTRAINT "artist_url_key" UNIQUE (url)
     );
     
-    CREATE TABLE "Album"
+    CREATE TABLE "RequestedAlbum"
     (
         id SERIAL NOT NULL,
         name character varying(255) NOT NULL,
@@ -36,12 +36,12 @@ exports.up = (db) => {
         PRIMARY KEY (id),
         CONSTRAINT "album_url_key" UNIQUE (url),
         FOREIGN KEY ("artistId")
-            REFERENCES "Artist" (id) MATCH SIMPLE
+            REFERENCES "RequestedArtist" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE
     );
     
-    CREATE TABLE "Song"
+    CREATE TABLE "RequestedSong"
     (
         id SERIAL NOT NULL,
         name character varying(255) NOT NULL,
@@ -50,12 +50,12 @@ exports.up = (db) => {
         PRIMARY KEY (id),
         CONSTRAINT "song_url_key" UNIQUE (url),
         FOREIGN KEY ("artistId")
-            REFERENCES "Artist" (id) MATCH SIMPLE
+            REFERENCES "RequestedArtist" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE
     );
     
-    CREATE TABLE "UserArtist"
+    CREATE TABLE "UserRequestedArtist"
     (
         "userId" integer NOT NULL,
         "artistId" integer NOT NULL,
@@ -65,12 +65,12 @@ exports.up = (db) => {
             ON UPDATE CASCADE
             ON DELETE CASCADE,
         FOREIGN KEY ("artistId")
-            REFERENCES "Artist" (id) MATCH SIMPLE
+            REFERENCES "RequestedArtist" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE
     );
     
-    CREATE TABLE "UserAlbum"
+    CREATE TABLE "UserRequestedAlbum"
     (
         "userId" integer NOT NULL,
         "albumId" integer NOT NULL,
@@ -80,12 +80,12 @@ exports.up = (db) => {
             ON UPDATE CASCADE
             ON DELETE CASCADE,
         FOREIGN KEY ("albumId")
-            REFERENCES "Album" (id) MATCH SIMPLE
+            REFERENCES "RequestedAlbum" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE
     );
     
-    CREATE TABLE "UserSong"
+    CREATE TABLE "UserRequestedSong"
     (
         "userId" integer NOT NULL,
         "songId" integer NOT NULL,
@@ -95,7 +95,7 @@ exports.up = (db) => {
             ON UPDATE CASCADE
             ON DELETE CASCADE,
         FOREIGN KEY ("songId")
-            REFERENCES "Song" (id) MATCH SIMPLE
+            REFERENCES "RequestedSong" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE
     );
