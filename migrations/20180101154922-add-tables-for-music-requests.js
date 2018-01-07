@@ -32,6 +32,7 @@ exports.up = (db) => {
         id SERIAL NOT NULL,
         name character varying(255) NOT NULL,
         url character varying NOT NULL,
+        "imageUrl" character varying,
         "artistId" integer NOT NULL,
         PRIMARY KEY (id),
         CONSTRAINT "album_url_key" UNIQUE (url),
@@ -104,12 +105,12 @@ exports.up = (db) => {
 
 exports.down = (db) => {
   return db.runSql(`
-    DROP TABLE IF EXISTS "UserSong";
-    DROP TABLE IF EXISTS "UserAlbum";
-    DROP TABLE IF EXISTS "UserArtist";
-    DROP TABLE IF EXISTS "Song";
-    DROP TABLE IF EXISTS "Album";
-    DROP TABLE IF EXISTS "Artist";
+    DROP TABLE IF EXISTS "UserRequestedSong";
+    DROP TABLE IF EXISTS "UserRequestedAlbum";
+    DROP TABLE IF EXISTS "UserRequestedArtist";
+    DROP TABLE IF EXISTS "RequestedSong";
+    DROP TABLE IF EXISTS "RequestedAlbum";
+    DROP TABLE IF EXISTS "RequestedArtist";
   `);
 };
 

@@ -1,5 +1,7 @@
-import {BelongsTo, Column, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, BelongsToMany, Column, ForeignKey, Model, Table} from "sequelize-typescript";
 import {RequestedArtist} from "./RequestedArtist";
+import {User} from "../../user/models/User";
+import {UserRequestedSong} from "./UserRequestedSong";
 
 @Table
 export class RequestedSong extends Model<RequestedSong> {
@@ -16,4 +18,7 @@ export class RequestedSong extends Model<RequestedSong> {
 
   @BelongsTo(() => RequestedArtist)
   artist: RequestedArtist;
+
+  @BelongsToMany(() => User, () => UserRequestedSong)
+  users: User[];
 }

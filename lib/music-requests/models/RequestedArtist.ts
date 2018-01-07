@@ -1,6 +1,8 @@
-import {Column, HasMany, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, HasMany, Model, Table} from "sequelize-typescript";
 import {RequestedAlbum} from "./RequestedAlbum";
 import {RequestedSong} from "./RequestedSong";
+import {UserRequestedArtist} from "./UserRequestedArtist";
+import {User} from "../../user/models/User";
 
 @Table
 export class RequestedArtist extends Model<RequestedArtist> {
@@ -20,4 +22,6 @@ export class RequestedArtist extends Model<RequestedArtist> {
   @HasMany(() => RequestedSong)
   songs: RequestedSong[];
 
+  @BelongsToMany(() => User, () => UserRequestedArtist)
+  users: User[];
 }
