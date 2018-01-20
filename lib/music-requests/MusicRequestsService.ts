@@ -39,7 +39,7 @@ export class MusicRequestsService {
 
   async deleteRequestedArtistForUser(userId, artistId) {
     const affectedRows = await UserRequestedArtist.destroy({
-      where: {artistId}
+      where: {userId, artistId}
     });
 
     if (!affectedRows) {
@@ -91,7 +91,7 @@ export class MusicRequestsService {
 
   async deleteRequestedAlbumForUser(userId, albumId) {
     const affectedRows = await UserRequestedAlbum.destroy({
-      where: {albumId}
+      where: {userId, albumId}
     });
 
     if (!affectedRows) {
@@ -142,7 +142,7 @@ export class MusicRequestsService {
 
   async deleteRequestedSongForUser(userId, songId) {
     const affectedRows = await UserRequestedSong.destroy({
-      where: {songId}
+      where: {userId, songId}
     });
 
     if (!affectedRows) {
