@@ -1,5 +1,6 @@
 import {Inject} from "di-typescript";
 import * as express from "express";
+import * as helmet from "helmet";
 import {Application} from "express";
 import {Sequelize} from "sequelize-typescript";
 import * as cookieParser from "cookie-parser";
@@ -18,6 +19,7 @@ export class App {
     useContainer(injector);
 
     this.expressApp = express();
+    this.expressApp.use(helmet());
     this.expressApp.use(cookieParser());
     useExpressServer(this.expressApp, {
       routePrefix: '/api',

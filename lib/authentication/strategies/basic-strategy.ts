@@ -1,6 +1,8 @@
 import {BasicStrategy} from "passport-http";
 import {AuthenticationService} from "../AuthenticationService";
 
+overrideBasicStrategyChallenge();
+
 export function basicStrategy(authService: AuthenticationService): any {
   return new BasicStrategy(async (nameOrEmail, codeOrPassword, done) => {
     try {
@@ -10,4 +12,16 @@ export function basicStrategy(authService: AuthenticationService): any {
       done(e);
     }
   });
+}
+
+/**
+ * Prevents browser from opening native login popup
+ * see https://stackoverflow.com/a/17473627
+ */
+function overrideBasicStrategyChallenge() {
+  const challengeKey = '_challenge';
+  const orig = BasicStrategy.prototype[challengeKey];
+  BasicStrategy.prototype[challengeKey] = function() {
+    return orig.call(this).replace('Basic', 'xBasic');
+  };
 }
