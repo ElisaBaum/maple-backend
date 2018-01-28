@@ -50,6 +50,22 @@ describe('routes.user-(auth)', () => {
         expect(body).to.have.property('token').which.is.a('string');
       });
 
+      describe('case insensitivity', () => {
+
+        it(`should return jwt token with status ${OK} by basic auth`, async () => {
+          const name = 'elisa';
+          const userData: RecursivePartial<User> = {name: name.toLowerCase(), party: {code: 'abc'}};
+          const user = await User.create(userData, {include: [Party.unscoped()]});
+          const {party: {code}} = user;
+          const {body} = await request(expressApp)[method](url)
+            .set('Authorization', `Basic ${toBase64(`${name.toUpperCase()}:${code}`)}`)
+            .expect(OK);
+
+          expect(body).to.have.property('token').which.is.a('string');
+        });
+
+      });
+
       it(`should return Unauthorized with status ${UNAUTHORIZED} due to wrong password`, async () => {
         const userData: RecursivePartial<User> = {name: 'elisa', party: {code: 'abc'}};
         const {name} = await User.create(userData, {include: [Party.unscoped()]});

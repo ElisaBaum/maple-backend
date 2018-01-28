@@ -7,6 +7,7 @@ import {AuthUser} from "./AuthUser";
 import {config} from '../config';
 import {addMs} from '../utils/date';
 import {randomBytes} from 'crypto';
+import {Sequelize} from 'sequelize-typescript';
 
 @Inject
 export class AuthenticationService {
@@ -37,7 +38,7 @@ export class AuthenticationService {
         include: [{
           model: Party.unscoped(),
         }],
-        where: {name}
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', name)) as any
       });
 
       if (user && !user.isLocked()) {
