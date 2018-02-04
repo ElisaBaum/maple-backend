@@ -23,6 +23,7 @@ export class App {
     this.expressApp = express();
     this.expressApp.use(helmet());
     this.expressApp.use(express.static(config.static.path));
+    this.expressApp.get(/^(?!\/api).*$/g, (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
     this.expressApp.use(cookieParser());
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
@@ -36,7 +37,6 @@ export class App {
       debug: process.env.ENV !== 'prod',
       log: true,
     }));
-    this.expressApp.get('*', (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
   }
 
   getExpressApp() {
