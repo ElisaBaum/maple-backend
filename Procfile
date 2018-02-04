@@ -1,1 +1,1 @@
-web: node --debug=5858 --require ts-node/register index.ts
+web: node --inspect=5858 --require ts-node/register index.ts
