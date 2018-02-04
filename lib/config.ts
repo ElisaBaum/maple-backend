@@ -1,7 +1,11 @@
 import {minutes} from './utils/date';
+import * as path from "path";
 
 export const config = {
   environment: process.env.ENV || 'dev',
+  static: {
+    path: path.join(__dirname, '../node_modules/@baum/maple-ui/build')
+  },
   database: {
     host: process.env.DB_HOST as string,
     port: 5432,
