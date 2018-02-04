@@ -10,7 +10,8 @@
     "build": "tsc",
     "lint": "tslint --project tslint.json",
     "test": "mocha",
-    "cover": "nyc mocha"
+    "cover": "nyc mocha",
+    "start": "node --require ts-node/register index.ts"
   },
   "nyc": {
     "lines": 50,
