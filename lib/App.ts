@@ -7,17 +7,19 @@ import * as cookieParser from "cookie-parser";
 import {useExpressServer, useContainer} from "routing-controllers";
 import {injector} from "./injector";
 import * as errorhandler from 'strong-error-handler';
-import {AuthMiddleware} from "./authentication/AuthMiddleware";
+import {authMiddleware} from "./authentication/authMiddleware";
 import * as path from 'path';
 import {config} from './config';
 import {httpRedirectMiddleWare} from './common/httpsRedirectMiddleware';
+import {AuthenticationService} from './authentication/AuthenticationService';
 
 @Inject
 export class App {
 
   private expressApp: Application;
 
-  constructor(protected sequelize: Sequelize) {
+  constructor(protected sequelize: Sequelize,
+              protected authService: AuthenticationService) {
 
     useContainer(injector);
 
@@ -27,10 +29,10 @@ export class App {
     this.expressApp.use(express.static(config.static.path));
     this.expressApp.get(/^(?!\/api).*$/g, (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
     this.expressApp.use(cookieParser());
+    this.expressApp.use(authMiddleware(this.authService));
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
       controllers: [__dirname + "/**/*Controller.ts"],
-      middlewares: [AuthMiddleware],
       cors: true,
       defaultErrorHandler: false,
       classTransformer: false,
