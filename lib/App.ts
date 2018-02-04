@@ -8,6 +8,8 @@ import {useExpressServer, useContainer} from "routing-controllers";
 import {injector} from "./injector";
 import * as errorhandler from 'strong-error-handler';
 import {AuthMiddleware} from "./authentication/AuthMiddleware";
+import * as path from 'path';
+import {config} from './config';
 
 @Inject
 export class App {
@@ -20,6 +22,7 @@ export class App {
 
     this.expressApp = express();
     this.expressApp.use(helmet());
+    this.expressApp.use(express.static(config.static.path));
     this.expressApp.use(cookieParser());
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
@@ -33,6 +36,7 @@ export class App {
       debug: process.env.ENV !== 'prod',
       log: true,
     }));
+    this.expressApp.get('*', (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
   }
 
   getExpressApp() {
