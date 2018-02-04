@@ -27,16 +27,17 @@ export class App {
     this.expressApp.use(helmet());
     this.expressApp.use(httpRedirectMiddleWare());
     this.expressApp.use(express.static(config.static.path));
-    this.expressApp.get(/^(?!\/api).*$/g, (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
+    this.expressApp.get(/^(?!\/api).*$/, (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
     this.expressApp.use(cookieParser());
     this.expressApp.use(authMiddleware(this.authService));
+
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
       controllers: [__dirname + "/**/*Controller.ts"],
-      cors: true,
       defaultErrorHandler: false,
       classTransformer: false,
     });
+
     this.expressApp.use(errorhandler({
       debug: process.env.ENV !== 'prod',
       log: true,
