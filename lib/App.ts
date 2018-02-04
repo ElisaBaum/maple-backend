@@ -10,7 +10,7 @@ import * as errorhandler from 'strong-error-handler';
 import {AuthMiddleware} from "./authentication/AuthMiddleware";
 import * as path from 'path';
 import {config} from './config';
-import {HttpsRedirectMiddleware} from './common/HttpsRedirectMiddleware';
+import {httpRedirectMiddleWare} from './common/httpsRedirectMiddleware';
 
 @Inject
 export class App {
@@ -23,13 +23,14 @@ export class App {
 
     this.expressApp = express();
     this.expressApp.use(helmet());
+    this.expressApp.use(httpRedirectMiddleWare());
     this.expressApp.use(express.static(config.static.path));
     this.expressApp.get(/^(?!\/api).*$/g, (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
     this.expressApp.use(cookieParser());
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
       controllers: [__dirname + "/**/*Controller.ts"],
-      middlewares: [HttpsRedirectMiddleware, AuthMiddleware],
+      middlewares: [AuthMiddleware],
       cors: true,
       defaultErrorHandler: false,
       classTransformer: false,
