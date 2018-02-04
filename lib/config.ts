@@ -2,7 +2,7 @@ import {minutes} from './utils/date';
 import * as path from "path";
 
 export const config = {
-  environment: process.env.ENV || 'dev',
+  environment: process.env.ENV || process.env.NODE_ENV || 'dev',
   static: {
     path: path.join(__dirname, '../node_modules/@baum/maple-ui/build')
   },
