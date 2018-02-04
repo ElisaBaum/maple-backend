@@ -10,6 +10,7 @@ import * as errorhandler from 'strong-error-handler';
 import {AuthMiddleware} from "./authentication/AuthMiddleware";
 import * as path from 'path';
 import {config} from './config';
+import {HttpsRedirectMiddleware} from './common/HttpsRedirectMiddleware';
 
 @Inject
 export class App {
@@ -28,7 +29,7 @@ export class App {
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
       controllers: [__dirname + "/**/*Controller.ts"],
-      middlewares: [AuthMiddleware],
+      middlewares: [HttpsRedirectMiddleware, AuthMiddleware],
       cors: true,
       defaultErrorHandler: false,
       classTransformer: false,
