@@ -1,11 +1,10 @@
-import {Inject} from "di-typescript";
+import {Inject, Injector} from "di-typescript";
 import * as express from "express";
 import * as helmet from "helmet";
 import {Application} from "express";
 import {Sequelize} from "sequelize-typescript";
 import * as cookieParser from "cookie-parser";
 import {useExpressServer, useContainer} from "routing-controllers";
-import {injector} from "./injector";
 import * as errorhandler from 'strong-error-handler';
 import {authMiddleware} from "./authentication/authMiddleware";
 import * as path from 'path';
@@ -19,6 +18,7 @@ export class App {
   private expressApp: Application;
 
   constructor(protected sequelize: Sequelize,
+              protected injector: Injector,
               protected authService: AuthenticationService) {
 
     useContainer(injector);
