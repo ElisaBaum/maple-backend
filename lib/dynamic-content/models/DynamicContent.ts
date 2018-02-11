@@ -1,6 +1,6 @@
 import {Table, Model, Column, PrimaryKey, DataType} from "sequelize-typescript";
 
-export interface Resources { [key: string]: string | string[]; }
+export interface Resources { [key: string]: string; }
 
 @Table
 export class DynamicContent<T> extends Model<DynamicContent<T>> {

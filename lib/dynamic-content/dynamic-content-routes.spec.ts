@@ -3,10 +3,24 @@ import * as request from 'supertest';
 import {App} from '../App';
 import {AuthenticationService} from '../authentication/AuthenticationService';
 import {NOT_FOUND, OK} from 'http-status-codes';
-import {injector} from '../injector';
 import {DynamicContent} from './models/DynamicContent';
+import {Sequelize} from 'sequelize-typescript';
+import {sequelizeFactory} from '../common/sequelizeFactory';
+import {Injector} from 'di-typescript';
+import {S3Service} from '../common/S3Service';
 
 describe('routes.dynamic-content', () => {
+
+  const unPrefixedObjectListMock = ['b.jpg', 'c.jpg'];
+  const s3Mock: Partial<S3Service> = {
+    listObjects: (prefix?: string) => Promise.resolve(unPrefixedObjectListMock.map(obj => `${prefix}/${obj}`)),
+    getSignedUrl: (key: string) => Promise.resolve(`https://${key}`)
+  };
+
+  const injector = new Injector([
+    {provide: Sequelize, useFactory: sequelizeFactory},
+    {provide: S3Service, useValue: s3Mock},
+  ]);
 
   const app = injector.get(App);
   const authService = injector.get(AuthenticationService);
@@ -34,7 +48,7 @@ describe('routes.dynamic-content', () => {
         },
         resources: {
           IMG_A: 'a.jpg',
-          IMG_AA: ['b.jpg', 'c.jpg'],
+          IMG_AA: 'some_folder/*',
         },
       });
       const {body} = await request(expressApp)[method](`${url}${dynamicContent.key}`)
