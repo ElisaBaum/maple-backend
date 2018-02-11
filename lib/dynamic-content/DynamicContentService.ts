@@ -44,7 +44,6 @@ export class DynamicContentService {
       const keys = await this.s3Service.listObjects(prefix);
 
       return Promise.all(keys
-        .filter((key) => key !== prefix)
         .map(async (key) => this.s3Service.getSignedUrl(key)));
     }
     return this.s3Service.getSignedUrl(resource);

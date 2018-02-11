@@ -27,7 +27,10 @@ export class S3Service {
     if (!result.Contents) {
       throw new Error(`Resource Error: Could not find any resources in ${prefix}`);
     }
-    return result.Contents.map(({Key}) => Key as string);
+    const keys = result.Contents.map(({Key}) => Key as string);
+    // Remove the first key, because this is the bucket folder
+    keys.shift();
+    return keys;
   }
 
 }
