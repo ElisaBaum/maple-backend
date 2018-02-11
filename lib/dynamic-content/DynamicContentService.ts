@@ -1,7 +1,6 @@
 import {Inject} from 'di-typescript';
 import {DynamicContent} from './models/DynamicContent';
 import {S3Service} from '../common/S3Service';
-import {config} from '../config';
 
 @Inject
 export class DynamicContentService {
@@ -21,10 +20,8 @@ export class DynamicContentService {
     return Promise.all(Object
       .keys(dynamicContent.resources)
       .map(async key => {
-        const resources = dynamicContent.resources[key];
-        const urls = Array.isArray(resources)
-          ? await this.getSignedUrls(resources)
-          : await this.getSignedUrl(resources);
+        const resource = dynamicContent.resources[key];
+        const urls = await this.getSignedUrls(resource);
         this.replaceWithSignedUrls(key, urls, dynamicContent.content);
       }));
   }
@@ -40,15 +37,17 @@ export class DynamicContentService {
     });
   }
 
-  private async getSignedUrls(resources: string[]) {
-    return Promise.all(resources.map(resource => this.getSignedUrl(resource)));
+  private async getSignedUrls(resource: string) {
+    const WILDCARD_REGEX = /\/\*/;
+    if (WILDCARD_REGEX.test(resource)) {
+      const prefix = resource.replace(WILDCARD_REGEX, '');
+      const keys = await this.s3Service.listObjects(prefix);
+
+      return Promise.all(keys
+        .filter((key) => key !== prefix)
+        .map(async (key) => this.s3Service.getSignedUrl(key)));
+    }
+    return this.s3Service.getSignedUrl(resource);
   }
 
-  private async getSignedUrl(resource: string) {
-    return this.s3Service.getSignedUrl('getObject', {
-      Bucket: config.aws.s3.bucket,
-      Key: resource,
-      Expires: config.aws.s3.signedUrlExpirationTime,
-    });
-  }
 }
