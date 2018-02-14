@@ -1,4 +1,4 @@
-import {BasicStrategy} from "passport-http";
+import {BasicStrategy} from "@baum/passport-http";
 import {AuthenticationService} from "../AuthenticationService";
 
 overrideBasicStrategyChallenge();
