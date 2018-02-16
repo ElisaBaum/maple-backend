@@ -8,8 +8,12 @@ import {RecursivePartial} from "../common/RecursivePartial";
 import {UserRequestedSong} from "./models/UserRequestedSong";
 import {UserMusicRequestNotFoundError} from "./errors/UserMusicRequestNotFoundError";
 import {ArtistUrlNotProvidedError} from "./errors/ArtistUrlNotProvidedError";
+import {MaxMusicRequestsReachedError} from "./errors/MaxMusicRequestsReachedError";
+import {config} from '../config';
 
 export class MusicRequestsService {
+
+  static maxMusicRequestsPerUser = config.content.maxMusicRequestsPerUser;
 
   getRequestedArtists(userId) {
     return RequestedArtist.findAll({
@@ -22,6 +26,8 @@ export class MusicRequestsService {
   }
 
   async saveRequestedArtist(userId, artist: Partial<RequestedArtist>) {
+    await this.checkMusicRequestsLimit(userId);
+
     const [savedArtist] = await RequestedArtist.findOrCreate({
       defaults: artist,
       where: {
@@ -59,6 +65,8 @@ export class MusicRequestsService {
 
   async saveRequestedAlbum(userId, album: RecursivePartial<RequestedAlbum>) {
     if (album.artist && album.artist.url) {
+      this.checkMusicRequestsLimit(userId);
+
       const [savedArtist] = await RequestedArtist.findOrCreate({
         defaults: album.artist,
         where: {
@@ -111,6 +119,8 @@ export class MusicRequestsService {
 
   async saveRequestedSong(userId, song: RecursivePartial<RequestedSong>) {
     if (song.artist && song.artist.url) {
+      this.checkMusicRequestsLimit(userId);
+
       const [savedArtist] = await RequestedArtist.findOrCreate({
         defaults: song.artist,
         where: {
@@ -147,6 +157,19 @@ export class MusicRequestsService {
 
     if (!affectedRows) {
       throw new UserMusicRequestNotFoundError();
+    }
+  }
+
+  private async checkMusicRequestsLimit(userId) {
+    const requestedArtist = this.getRequestedArtists(userId);
+    const requestedAlbums = this.getRequestedAlbums(userId);
+    const requestedSongs = this.getRequestedSongs(userId);
+
+    const musicRequests = (await requestedArtist).length + (await requestedAlbums).length +
+      (await requestedSongs).length;
+
+    if (musicRequests >= MusicRequestsService.maxMusicRequestsPerUser) {
+      throw new MaxMusicRequestsReachedError();
     }
   }
 }
