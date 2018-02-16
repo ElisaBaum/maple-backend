@@ -44,6 +44,7 @@ export class AuthenticationService {
       if (user && !user.isLocked()) {
         if (user.party.code === code) {
           user.failedAuthAttempts = 0;
+          // no need to wait on the completion
           user.save();
           return user;
         } else {
