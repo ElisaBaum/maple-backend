@@ -161,14 +161,14 @@ export class MusicRequestsService {
   }
 
   private async checkMusicRequestsLimit(userId) {
-    const requestedArtist = this.getRequestedArtists(userId);
-    const requestedAlbums = this.getRequestedAlbums(userId);
-    const requestedSongs = this.getRequestedSongs(userId);
+    const musicRequests = await Promise.all([
+      this.getRequestedArtists(userId),
+      this.getRequestedAlbums(userId),
+      this.getRequestedSongs(userId),
+    ]);
+    const musicRequestsCount = musicRequests.reduce((acc, current) => acc + current.length, 0);
 
-    const musicRequests = (await requestedArtist).length + (await requestedAlbums).length +
-      (await requestedSongs).length;
-
-    if (musicRequests >= MusicRequestsService.maxMusicRequestsPerUser) {
+    if (musicRequestsCount >= MusicRequestsService.maxMusicRequestsPerUser) {
       throw new MaxMusicRequestsReachedError();
     }
   }
