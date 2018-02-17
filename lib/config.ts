@@ -37,5 +37,8 @@ export const config = {
       issuer: process.env.JWT_ISSUER as string,
       expiresIn: process.env.JWT_EXP as string,
     }
+  },
+  content: {
+    maxMusicRequestsPerUser: process.env.MAX_MUSIC_REQUESTS as string || 5,
   }
 };

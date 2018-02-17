@@ -13,6 +13,7 @@ import {UserRequestedSong} from "./models/UserRequestedSong";
 import {RequestedArtist} from "./models/RequestedArtist";
 import {RequestedAlbum} from "./models/RequestedAlbum";
 import {RequestedSong} from "./models/RequestedSong";
+import {MusicRequestsService} from "./MusicRequestsService";
 
 // tslint:disable:no-unused-expression
 
@@ -151,6 +152,28 @@ describe('routes.user-music-request', () => {
           .set('Authorization', `Bearer ${createAuthToken(createdArtist.users[0].id)}`)
           .send(artist)
           .expect(INTERNAL_SERVER_ERROR);
+      });
+
+      it(`should throw error if user has already reached the limit of music requests`, async () => {
+        const createdUser = await createUser();
+
+        for (let i = 0; i < MusicRequestsService.maxMusicRequestsPerUser; i++) {
+          const createdArtist = await RequestedArtist.create({
+            name: `artistName${i}`,
+            url: `artistUrl${i}`,
+            imageUrl: `artistImageUrl${i}`
+          });
+
+          await UserRequestedArtist.create({
+            userId: createdUser.id,
+            artistId: createdArtist.id
+          });
+        }
+
+        await request(expressApp)[method](`${url}`)
+          .set('Authorization', `Bearer ${createAuthToken(createdUser.id)}`)
+          .send(artist)
+          .expect(BAD_REQUEST);
       });
     });
   }
@@ -359,6 +382,28 @@ describe('routes.user-music-request', () => {
               name: 'artist'
             }
           })
+          .expect(BAD_REQUEST);
+      });
+
+      it(`should throw error if user has already reached the limit of music requests`, async () => {
+        const createdUser = await createUser();
+
+        for (let i = 0; i < MusicRequestsService.maxMusicRequestsPerUser; i++) {
+          const createdAlbum = await RequestedAlbum.create({
+            name: `albumName${i}`,
+            url: `albumUrl${i}`,
+            imageUrl: `albumImageUrl${i}`
+          });
+
+          await UserRequestedAlbum.create({
+            userId: createdUser.id,
+            albumId: createdAlbum.id
+          });
+        }
+
+        await request(expressApp)[method](`${url}`)
+          .set('Authorization', `Bearer ${createAuthToken(createdUser.id)}`)
+          .send(album)
           .expect(BAD_REQUEST);
       });
 
@@ -576,6 +621,27 @@ describe('routes.user-music-request', () => {
               name: 'artist'
             }
           })
+          .expect(BAD_REQUEST);
+      });
+
+      it(`should throw error if user has already reached the limit of music requests`, async () => {
+        const createdUser = await createUser();
+
+        for (let i = 0; i < MusicRequestsService.maxMusicRequestsPerUser; i++) {
+          const createdSong = await RequestedSong.create({
+            name: `songName${i}`,
+            url: `songUrl${i}`
+          });
+
+          await UserRequestedSong.create({
+            userId: createdUser.id,
+            songId: createdSong.id
+          });
+        }
+
+        await request(expressApp)[method](`${url}`)
+          .set('Authorization', `Bearer ${createAuthToken(createdUser.id)}`)
+          .send(song)
           .expect(BAD_REQUEST);
       });
 
