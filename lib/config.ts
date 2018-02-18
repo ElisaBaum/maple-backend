@@ -39,6 +39,6 @@ export const config = {
     }
   },
   content: {
-    maxMusicRequestsPerUser: process.env.MAX_MUSIC_REQUESTS as string || 5,
+    maxMusicRequestsPerUser: parseFloat(process.env.MAX_MUSIC_REQUESTS || '5'),
   }
 };

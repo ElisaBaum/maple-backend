@@ -11,9 +11,9 @@ import {ArtistUrlNotProvidedError} from "./errors/ArtistUrlNotProvidedError";
 import {MaxMusicRequestsReachedError} from "./errors/MaxMusicRequestsReachedError";
 import {config} from '../config';
 
-export class MusicRequestsService {
+export const MAX_MUSIC_REQUESTS_PER_USER = config.content.maxMusicRequestsPerUser;
 
-  static maxMusicRequestsPerUser = config.content.maxMusicRequestsPerUser;
+export class MusicRequestsService {
 
   getRequestedArtists(userId) {
     return RequestedArtist.findAll({
@@ -168,7 +168,7 @@ export class MusicRequestsService {
     ]);
     const musicRequestsCount = musicRequests.reduce((acc, current) => acc + current.length, 0);
 
-    if (musicRequestsCount >= MusicRequestsService.maxMusicRequestsPerUser) {
+    if (musicRequestsCount >= MAX_MUSIC_REQUESTS_PER_USER) {
       throw new MaxMusicRequestsReachedError();
     }
   }
