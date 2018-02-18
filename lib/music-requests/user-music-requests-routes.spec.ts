@@ -13,7 +13,7 @@ import {UserRequestedSong} from "./models/UserRequestedSong";
 import {RequestedArtist} from "./models/RequestedArtist";
 import {RequestedAlbum} from "./models/RequestedAlbum";
 import {RequestedSong} from "./models/RequestedSong";
-import {MusicRequestsService} from "./MusicRequestsService";
+import {MAX_MUSIC_REQUESTS_PER_USER} from "./MusicRequestsService";
 
 // tslint:disable:no-unused-expression
 
@@ -157,7 +157,7 @@ describe('routes.user-music-request', () => {
       it(`should throw error if user has already reached the limit of music requests`, async () => {
         const createdUser = await createUser();
 
-        for (let i = 0; i < MusicRequestsService.maxMusicRequestsPerUser; i++) {
+        for (let i = 0; i < MAX_MUSIC_REQUESTS_PER_USER; i++) {
           const createdArtist = await RequestedArtist.create({
             name: `artistName${i}`,
             url: `artistUrl${i}`,
@@ -388,7 +388,7 @@ describe('routes.user-music-request', () => {
       it(`should throw error if user has already reached the limit of music requests`, async () => {
         const createdUser = await createUser();
 
-        for (let i = 0; i < MusicRequestsService.maxMusicRequestsPerUser; i++) {
+        for (let i = 0; i < MAX_MUSIC_REQUESTS_PER_USER; i++) {
           const createdAlbum = await RequestedAlbum.create({
             name: `albumName${i}`,
             url: `albumUrl${i}`,
@@ -627,7 +627,7 @@ describe('routes.user-music-request', () => {
       it(`should throw error if user has already reached the limit of music requests`, async () => {
         const createdUser = await createUser();
 
-        for (let i = 0; i < MusicRequestsService.maxMusicRequestsPerUser; i++) {
+        for (let i = 0; i < MAX_MUSIC_REQUESTS_PER_USER; i++) {
           const createdSong = await RequestedSong.create({
             name: `songName${i}`,
             url: `songUrl${i}`
