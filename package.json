@@ -67,7 +67,7 @@
     "tslint": "^5.8.0"
   },
   "dependencies": {
-    "@baum/maple-ui": "^1.0.4",
+    "@baum/maple-ui": "^1.0.5",
     "@baum/passport-http": "^1.0.0",
     "@etianen/base-error": "^0.2.1",
     "@types/body-parser": "^1.16.7",
