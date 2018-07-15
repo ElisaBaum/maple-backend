@@ -1,5 +1,5 @@
 import {injector} from "./injector";
-import {App} from "./App";
+import {App} from "./app";
 
 const app = injector.get(App).getExpressApp();
 

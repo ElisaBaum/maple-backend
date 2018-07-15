@@ -1,13 +1,12 @@
 import {expect} from 'chai';
 import * as request from 'supertest';
-import {App} from '../App';
-import {AuthenticationService} from '../authentication/AuthenticationService';
+import {App} from '../app';
+import {AuthenticationService} from '../authentication/authentication.service';
 import {NOT_FOUND, OK} from 'http-status-codes';
-import {DynamicContent} from './models/DynamicContent';
-import {Sequelize} from 'sequelize-typescript';
-import {sequelizeFactory} from '../common/sequelizeFactory';
-import {Injector} from 'di-typescript';
-import {S3Service} from '../common/S3Service';
+import {DynamicContent} from './models/dynamic-content.model';
+import {ReflectiveInjector} from 'injection-js';
+import {S3Service} from '../common/s3.service';
+import {PROVIDERS} from '../injector';
 
 describe('routes.dynamic-content', () => {
 
@@ -17,8 +16,8 @@ describe('routes.dynamic-content', () => {
     getSignedUrl: (key: string) => Promise.resolve(`https://${key}`)
   };
 
-  const injector = new Injector([
-    {provide: Sequelize, useFactory: sequelizeFactory},
+  const injector = ReflectiveInjector.resolveAndCreate([
+    ...PROVIDERS,
     {provide: S3Service, useValue: s3Mock},
   ]);
 

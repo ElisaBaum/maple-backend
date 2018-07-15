@@ -1,10 +1,20 @@
-import {Injector} from "di-typescript";
-import {Sequelize} from "sequelize-typescript";
-import {sequelizeFactory} from "./common/sequelizeFactory";
-import {s3Factory} from './common/s3Factory';
-import {S3} from 'aws-sdk';
+import {ReflectiveInjector} from "injection-js";
+import {AUTHENTICATION_PROVIDERS} from './authentication/authentication.providers';
+import {COMMON_PROVIDERS} from './common/common.providers';
+import {DYNAMIC_CONTENT_PROVIDERS} from './dynamic-content/dynamic-content.providers';
+import {MUSIC_REQUESTS_PROVIDERS} from './music-requests/music-requests.providers';
+import {ROOM_RESERVATION_PROVIDERS} from './room-reservation/room-reservation.providers';
+import {USER_PROVIDERS} from './user/user.providers';
+import {App} from './app';
 
-export const injector = new Injector([
-  {provide: Sequelize, useFactory: sequelizeFactory},
-  {provide: S3, useFactory: s3Factory},
-]);
+export const PROVIDERS = [
+  App,
+  ...COMMON_PROVIDERS,
+  ...AUTHENTICATION_PROVIDERS,
+  ...DYNAMIC_CONTENT_PROVIDERS,
+  ...MUSIC_REQUESTS_PROVIDERS,
+  ...ROOM_RESERVATION_PROVIDERS,
+  ...USER_PROVIDERS,
+];
+
+export const injector = ReflectiveInjector.resolveAndCreate(PROVIDERS);

@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import * as request from 'supertest';
-import {App} from '../App';
-import {AuthenticationService} from '../authentication/AuthenticationService';
+import {App} from '../app';
+import {AuthenticationService} from '../authentication/authentication.service';
 import {OK} from 'http-status-codes';
 import {injector} from '../injector';
-import {HotelRoom} from "./models/HotelRoom";
+import {HotelRoom} from "./models/hotel-room.model";
 
 describe('routes.hotel-rooms', () => {
 

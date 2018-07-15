@@ -1,4 +1,4 @@
-import {AuthenticationService} from "../AuthenticationService";
+import {AuthenticationService} from "../authentication.service";
 import {ExtractJwt, Strategy, VerifiedCallback} from "passport-jwt";
 import {config} from '../../config';
 
