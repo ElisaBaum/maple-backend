@@ -4,7 +4,7 @@ import {config} from '../config';
 export const sequelizeFactory = () => new Sequelize({
   ...config.database,
   modelPaths: [
-    __dirname + '/../*/models/*',
+    __dirname + '/../**/*.model.ts',
   ],
   dialectOptions: {
     ssl: true

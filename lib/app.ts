@@ -17,9 +17,9 @@ export class App {
 
   private expressApp: Application;
 
-  constructor(protected sequelize: Sequelize,
-              protected injector: Injector,
-              protected authService: AuthenticationService) {
+  constructor(private sequelize: Sequelize,
+              authService: AuthenticationService,
+              injector: Injector) {
 
     useContainer(injector);
 
@@ -29,7 +29,7 @@ export class App {
     this.expressApp.use(express.static(config.static.path));
     this.expressApp.get(/^(?!\/api).*$/, (req, res) => res.sendFile(path.join(config.static.path, 'index.html')));
     this.expressApp.use(cookieParser());
-    this.expressApp.use(authMiddleware(this.authService));
+    this.expressApp.use(authMiddleware(authService));
 
     useExpressServer(this.expressApp, {
       routePrefix: '/api',

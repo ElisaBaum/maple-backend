@@ -79,6 +79,7 @@
     "@types/passport": "^0.3.5",
     "@types/passport-http": "^0.3.3",
     "@types/passport-jwt": "^3.0.0",
+    "@types/uuid": "^3.4.3",
     "aws-sdk": "^2.175.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
@@ -92,13 +93,13 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "pg": "^6.4.2",
-    "react-s3-uploader": "^4.8.0",
     "reflect-metadata": "^0.1.10",
     "routing-controllers": "^0.7.6",
     "sequelize": "^4.20.1",
     "sequelize-typescript": "^0.6.2",
     "strong-error-handler": "^2.3.0",
     "ts-node": "^3.3.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "uuid": "^3.3.2"
   }
 }
