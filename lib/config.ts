@@ -26,7 +26,7 @@ export const config = {
     s3: {
       bucket: 'maple-backend',
       maxBytes: parseFloat(process.env.AWS_S3_UPLOAD_MAX_BYTES || '200000000'),
-      signedUrlExpirationTime: minutes(5).inSeconds(),
+      signedUrlExpirationTime: minutes(60).inSeconds(),
     },
   },
   auth: {

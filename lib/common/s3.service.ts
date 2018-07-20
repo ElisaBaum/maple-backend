@@ -8,6 +8,7 @@ const {aws} = config;
 const SECRET = aws.config.secretAccessKey;
 const ACCESS_KEY = aws.config.accessKeyId;
 const URL = `https://s3.${aws.config.region}.amazonaws.com/`;
+// const URL = `https://${aws.s3.bucket}.s3.${aws.config.region}.amazonaws.com/`;
 const REGION = aws.config.region;
 
 const EXPIRE_IN = 10; // minutes

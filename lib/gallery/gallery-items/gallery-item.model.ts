@@ -1,4 +1,4 @@
-import {BelongsTo, BelongsToMany, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from 'sequelize-typescript';
 import Party from '../../user/models/party.model';
 import {GalleryItemAccess} from './gallery-item-access.enum';
 import GallerySection from '../gallery-sections/gallery-section.model';
@@ -10,6 +10,18 @@ export class GalleryItem extends Model<GalleryItem> {
 
   @Column
   key: string;
+
+  @Column
+  resizedKey: string;
+
+  @Column(DataType.VIRTUAL)
+  originalUrl: string;
+
+  @Column(DataType.VIRTUAL)
+  resizedUrl: string;
+
+  @Column
+  type: string;
 
   @ForeignKey(() => GallerySection)
   @Column

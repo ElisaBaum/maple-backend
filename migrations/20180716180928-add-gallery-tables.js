@@ -25,18 +25,38 @@ exports.up = (db) => {
     
     INSERT INTO "GalleryAccess" (type) 
       VALUES ('All'), ('Restricted');
+      
+    CREATE TABLE "GallerySection"
+    (
+        id SERIAL NOT NULL,
+        name character varying(255) NOT NULL,
+        "partyId" integer NOT NULL,
+        PRIMARY KEY (id),
+        CONSTRAINT "gallerysection_name_party_key" UNIQUE (name, "partyId"),
+        FOREIGN KEY ("partyId")
+            REFERENCES "Party" (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
+    );
     
     CREATE TABLE "GalleryItem"
     (
         id SERIAL NOT NULL,
         key character varying(512) NOT NULL,
+        "resizedKey" character varying(512) NOT NULL,
+        type character varying(255) NOT NULL,
         "partyId" integer NOT NULL,
+        "sectionId" integer NOT NULL,
         "lastModifiedAt" date,
         "access" character varying(255) NOT NULL,
         PRIMARY KEY (id),
         CONSTRAINT "galleryitem_key_key" UNIQUE (key),
         FOREIGN KEY ("access")
           REFERENCES "GalleryAccess" (type) MATCH SIMPLE
+          ON UPDATE CASCADE
+          ON DELETE CASCADE,
+        FOREIGN KEY ("sectionId")
+          REFERENCES "GallerySection" (id) MATCH SIMPLE
           ON UPDATE CASCADE
           ON DELETE CASCADE
     );
@@ -52,19 +72,6 @@ exports.up = (db) => {
             ON DELETE CASCADE,
         FOREIGN KEY ("userId")
             REFERENCES "User" (id) MATCH SIMPLE
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-    );
-    
-    CREATE TABLE "GallerySection"
-    (
-        id SERIAL NOT NULL,
-        name character varying(255) NOT NULL,
-        "partyId" integer NOT NULL,
-        PRIMARY KEY (id),
-        CONSTRAINT "gallerysection_name_party_key" UNIQUE (name, "partyId"),
-        FOREIGN KEY ("partyId")
-            REFERENCES "Party" (id) MATCH SIMPLE
             ON UPDATE CASCADE
             ON DELETE CASCADE
     );
