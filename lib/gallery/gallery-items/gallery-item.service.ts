@@ -18,36 +18,37 @@ export class GalleryItemService {
                                    sectionId: number,
                                    limit: number,
                                    offset: number) {
-    return Promise.all(
-      (await GalleryItem.findAll({
-        where: {
-          partyId: user.partyId,
-          sectionId,
-          [Sequelize.Op.or]: [
-            {access: GalleryItemAccess.All},
-            Sequelize.and(
-              {access: GalleryItemAccess.Restricted},
-              Sequelize.literal(`(
+    const {rows: galleryItems, count} = await GalleryItem.findAndCountAll({
+      where: {
+        partyId: user.partyId,
+        sectionId,
+        [Sequelize.Op.or]: [
+          {access: GalleryItemAccess.All},
+          Sequelize.and(
+            {access: GalleryItemAccess.Restricted},
+            Sequelize.literal(`(
     		        SELECT COUNT(*) 
                 FROM "GalleryItemRestrictedAccess"
                 WHERE "galleryItemId" = "id" AND "userId" = ${user.id}
                 ) > 0`)
-            ),
-          ],
-        },
-        limit,
-        offset,
-      }))
-        .map(async (galleryItem) => {
-          const [originalUrl, resizedUrl] = await Promise.all([
-            this.s3Service.getSignedUrl(galleryItem.key),
-            this.s3Service.getSignedUrl(galleryItem.resizedKey),
-          ]);
-          galleryItem.originalUrl = originalUrl;
-          galleryItem.resizedUrl = resizedUrl;
-          return galleryItem;
-        })
+          ),
+        ],
+      },
+      limit,
+      offset,
+    });
+    const preparedItems = await Promise.all(galleryItems
+      .map(async (galleryItem) => {
+        const [originalUrl, resizedUrl] = await Promise.all([
+          this.s3Service.getSignedUrl(galleryItem.key),
+          this.s3Service.getSignedUrl(galleryItem.resizedKey),
+        ]);
+        galleryItem.originalUrl = originalUrl;
+        galleryItem.resizedUrl = resizedUrl;
+        return galleryItem;
+      })
     );
+    return {galleryItems: preparedItems, totalItems: count};
   }
 
   async deleteGalleryItemsBySection(user, gallerySection: GallerySection) {

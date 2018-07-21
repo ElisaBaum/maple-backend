@@ -1,5 +1,5 @@
-import {Request} from 'express';
-import {Body, Delete, Get, JsonController, OnUndefined, Param, Patch, Post, QueryParam, Req} from 'routing-controllers';
+import {Request, Response} from 'express';
+import {Body, Delete, Get, JsonController, OnUndefined, Param, Patch, Post, QueryParam, Req, Res} from 'routing-controllers';
 import {Injectable} from 'injection-js';
 import {CreateGalleryItemDTO} from '../gallery-items/create-gallery-item.dto';
 import {NotFoundError} from '../../common/errors/not-found.error';
@@ -24,12 +24,15 @@ export class UserGallerySectionController {
 
   @Get('/users/me/gallery-sections/:id/gallery-items')
   async getGalleryItems(@Req() req: Request,
+                        @Res() res: Response,
                         @QueryParam('limit') limit: number,
                         @QueryParam('offset') offset: number,
                         @Param('id') gallerySectionId: number) {
     limit = limit || 25;
     offset = offset || 0;
-    return this.galleryItemService.getGalleryItemsBySectionId(req.user, gallerySectionId, limit, offset);
+    const {galleryItems, totalItems}  = await this.galleryItemService.getGalleryItemsBySectionId(req.user, gallerySectionId, limit, offset);
+    res.setHeader('X-Total-Count', totalItems);
+    return galleryItems;
   }
 
   @Post('/users/me/gallery-sections')
