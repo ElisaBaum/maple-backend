@@ -4,16 +4,14 @@ import {Injectable} from 'injection-js';
 import {CreateGalleryItemDTO} from './create-gallery-item.dto';
 import GalleryItem from './gallery-item.model';
 import {NotFoundError} from '../../common/errors/not-found.error';
-import uuid = require('uuid');
-import {S3Service} from '../../common/s3.service';
 import {ForbiddenError} from '../../common/errors/forbidden.error';
-import {GALLERY_FOLDER, ORIGINAL_FOLDER, RESIZED_FOLDER} from '../shared/gallery.constants';
+import {GalleryItemService} from './gallery-item.service';
 
 @Injectable()
 @JsonController()
 export class UserGalleryItemController {
 
-  constructor(private s3Service: S3Service) {
+  constructor(private galleryItemService: GalleryItemService) {
 
   }
 
@@ -52,24 +50,14 @@ export class UserGalleryItemController {
     if (galleryItem.partyId !== req.user.partyId) {
       throw new ForbiddenError(`You're not allowed to remove GalleryItem with ID "${galleryItemId}"`);
     }
-    await Promise.all([
-      this.s3Service.deleteObject(galleryItem.key),
-      this.s3Service.deleteObject(galleryItem.resizedKey),
-    ]);
-    await galleryItem.destroy();
+    await this.galleryItemService.deleteGalleryItem(galleryItem);
   }
 
   @Get('/users/me/gallery-item-s3-policy')
   getGalleryItemS3Policy(@Req() req: Request,
                          @QueryParam('key') key: string,
                          @QueryParam('contentType') contentType: string) {
-    const acl = 'private';
-    const prefix = uuid();
-    const getPath = folder => `${GALLERY_FOLDER}/${folder}/${req.user.partyId}/${prefix}-${key}`;
-    const resizedKey = getPath(RESIZED_FOLDER);
-    const originalKey = getPath(ORIGINAL_FOLDER);
-    const policy =  this.s3Service.getUploadPolicy({acl, key: originalKey, contentType});
-    return {...policy, resizedKey};
+    return this.galleryItemService.getGalleryItemS3Policy(req.user.partyId, key, contentType);
   }
 
 
