@@ -52,7 +52,10 @@ export class UserGalleryItemController {
     if (galleryItem.partyId !== req.user.partyId) {
       throw new ForbiddenError(`You're not allowed to remove GalleryItem with ID "${galleryItemId}"`);
     }
-    await this.s3Service.deleteObject(galleryItem.key);
+    await Promise.all([
+      this.s3Service.deleteObject(galleryItem.key),
+      this.s3Service.deleteObject(galleryItem.resizedKey),
+    ]);
     await galleryItem.destroy();
   }
 
@@ -61,11 +64,11 @@ export class UserGalleryItemController {
                          @QueryParam('key') key: string,
                          @QueryParam('contentType') contentType: string) {
     const acl = 'private';
-    const galleryPartyPath = `${GALLERY_FOLDER}/${req.user.partyId}`;
-    const objectName = `${uuid()}-${key}`;
-    const resizedKey = `${galleryPartyPath}/${RESIZED_FOLDER}/${objectName}`;
-    key = `${galleryPartyPath}/${ORIGINAL_FOLDER}/${objectName}`;
-    const policy =  this.s3Service.getUploadPolicy({acl, key, contentType});
+    const prefix = uuid();
+    const getPath = folder => `${GALLERY_FOLDER}/${folder}/${req.user.partyId}/${prefix}-${key}`;
+    const resizedKey = getPath(RESIZED_FOLDER);
+    const originalKey = getPath(ORIGINAL_FOLDER);
+    const policy =  this.s3Service.getUploadPolicy({acl, key: originalKey, contentType});
     return {...policy, resizedKey};
   }
 

@@ -9,6 +9,12 @@ import GalleryItemRestrictedAccess from './gallery-item-restricted-access.model'
 export class GalleryItem extends Model<GalleryItem> {
 
   @Column
+  originalName: string;
+
+  @Column
+  title: string;
+
+  @Column
   key: string;
 
   @Column

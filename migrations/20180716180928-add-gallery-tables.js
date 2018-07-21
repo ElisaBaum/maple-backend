@@ -41,10 +41,12 @@ exports.up = (db) => {
     
     CREATE TABLE "GalleryItem"
     (
-        id SERIAL NOT NULL,
-        key character varying(512) NOT NULL,
+        "id" SERIAL NOT NULL,
+        "originalName" character varying(512) NOT NULL,
+        "title" character varying(255),
+        "key" character varying(512) NOT NULL,
         "resizedKey" character varying(512) NOT NULL,
-        type character varying(255) NOT NULL,
+        "type" character varying(255) NOT NULL,
         "partyId" integer NOT NULL,
         "sectionId" integer NOT NULL,
         "lastModifiedAt" date,
