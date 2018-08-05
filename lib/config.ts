@@ -28,6 +28,9 @@ export const config = {
       maxBytes: parseFloat(process.env.AWS_S3_UPLOAD_MAX_BYTES || '200000000'),
       signedUrlExpirationTime: minutes(60).inSeconds(),
     },
+    lambda: {
+      galleryZipperName: 'GalleryZipper'
+    }
   },
   auth: {
     maxFailedAttempts: parseFloat(process.env.AUTH_MAX_FAILED_ATTEMPTS || '5'),

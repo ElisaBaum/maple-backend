@@ -79,11 +79,11 @@ export class GalleryItemService {
     await galleryItem.destroy();
   }
 
-  getGalleryItemS3Policy(partyId: string, key: string, contentType: string) {
+  getGalleryItemS3Policy(gallerySection: GallerySection, key: string, contentType: string) {
     const acl = 'private';
     const prefix = uuid();
     const normalizedKey = key.replace(/\s/g, '_');
-    const getPath = folder => `${GALLERY_FOLDER}/${folder}/${partyId}/${prefix}-${normalizedKey}`;
+    const getPath = folder => `${GALLERY_FOLDER}/${folder}/${gallerySection.id}/${prefix}-${normalizedKey}`;
     const resizedKey = getPath(RESIZED_FOLDER);
     const originalKey = getPath(ORIGINAL_FOLDER);
     const policy = this.s3Service.getUploadPolicy({acl, key: originalKey, contentType});
