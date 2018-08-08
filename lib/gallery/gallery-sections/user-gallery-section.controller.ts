@@ -6,12 +6,13 @@ import {NotFoundError} from '../../common/errors/not-found.error';
 import GallerySection from './gallery-section.model';
 import {ForbiddenError} from '../../common/errors/forbidden.error';
 import {GalleryItemService} from '../gallery-items/gallery-item.service';
+import {GallerySectionService} from './gallery-section.service';
 
 @Injectable()
 @JsonController()
 export class UserGallerySectionController {
 
-  constructor(private galleryItemService: GalleryItemService) {
+  constructor(private galleryItemService: GalleryItemService, private gallerySectionService: GallerySectionService) {
 
   }
 
@@ -63,6 +64,29 @@ export class UserGallerySectionController {
   @Delete('/users/me/gallery-sections/:id')
   async deleteGallerySection(@Req() req: Request,
                              @Param('id') gallerySectionId: number) {
+    const gallerySection = await this.validateGallerySection(gallerySectionId, req);
+    await this.galleryItemService.deleteGalleryItemsBySection(req.user, gallerySection);
+    await gallerySection.destroy();
+  }
+
+  @Get('/users/me/gallery-sections/:id/gallery-item-s3-policy')
+  async getGalleryItemS3Policy(@Req() req: Request,
+                               @Param('id') gallerySectionId: number,
+                               @QueryParam('key') key: string,
+                               @QueryParam('contentType') contentType: string) {
+
+    const gallerySection = await this.validateGallerySection(gallerySectionId, req);
+    return this.galleryItemService.getGalleryItemS3Policy(gallerySection, key, contentType);
+  }
+
+  @Get('/users/me/gallery-sections/:id/zipped')
+  async getZippedGallerySection(@Req() req: Request,
+                                @Param('id') gallerySectionId: number) {
+    const gallerySection = await this.validateGallerySection(gallerySectionId, req);
+    this.gallerySectionService.getZippedGallerySection(gallerySection);
+  }
+
+  private async validateGallerySection(gallerySectionId: number, req: Request) {
     const gallerySection = await GallerySection.findById(gallerySectionId);
     if (!gallerySection) {
       throw new NotFoundError(`GallerySection with ID "${gallerySectionId}" not found`);
@@ -70,8 +94,7 @@ export class UserGallerySectionController {
     if (gallerySection.partyId !== req.user.partyId) {
       throw new ForbiddenError(`You're not allowed to remove GallerySection with ID "${gallerySectionId}"`);
     }
-    await this.galleryItemService.deleteGalleryItemsBySection(req.user, gallerySection);
-    await gallerySection.destroy();
+    return gallerySection;
   }
 
 }

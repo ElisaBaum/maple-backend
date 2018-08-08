@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import {Body, Delete, Get, JsonController, OnUndefined, Param, Patch, Post, QueryParam, Req} from 'routing-controllers';
+import {Body, Delete, JsonController, OnUndefined, Param, Patch, Post, Req} from 'routing-controllers';
 import {Injectable} from 'injection-js';
 import {CreateGalleryItemDTO} from './create-gallery-item.dto';
 import GalleryItem from './gallery-item.model';
@@ -52,13 +52,5 @@ export class UserGalleryItemController {
     }
     await this.galleryItemService.deleteGalleryItem(galleryItem);
   }
-
-  @Get('/users/me/gallery-item-s3-policy')
-  getGalleryItemS3Policy(@Req() req: Request,
-                         @QueryParam('key') key: string,
-                         @QueryParam('contentType') contentType: string) {
-    return this.galleryItemService.getGalleryItemS3Policy(req.user.partyId, key, contentType);
-  }
-
 
 }
