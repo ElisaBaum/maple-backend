@@ -20,7 +20,6 @@ export class GalleryItemService {
                                    offset: number) {
     const {rows: galleryItems, count} = await GalleryItem.findAndCountAll({
       where: {
-        partyId: user.partyId,
         sectionId,
         [Sequelize.Op.or]: [
           {access: GalleryItemAccess.All},

@@ -1,10 +1,13 @@
-import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, DataType, DefaultScope, ForeignKey, Model, Table} from 'sequelize-typescript';
 import Party from '../../user/models/party.model';
 import {GalleryItemAccess} from './gallery-item-access.enum';
 import GallerySection from '../gallery-sections/gallery-section.model';
 import User from '../../user/models/user.model';
 import GalleryItemRestrictedAccess from './gallery-item-restricted-access.model';
 
+@DefaultScope({
+  order: [['lastModifiedAt', 'ASC'], ['originalName', 'DESC']]
+})
 @Table
 export class GalleryItem extends Model<GalleryItem> {
 
