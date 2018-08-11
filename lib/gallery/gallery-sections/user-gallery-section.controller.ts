@@ -83,7 +83,7 @@ export class UserGallerySectionController {
   async getZippedGallerySection(@Req() req: Request,
                                 @Param('id') gallerySectionId: number) {
     const gallerySection = await this.validateGallerySection(gallerySectionId, req);
-    this.gallerySectionService.getZippedGallerySection(gallerySection);
+    return this.gallerySectionService.getZippedGallerySection(gallerySection);
   }
 
   private async validateGallerySection(gallerySectionId: number, req: Request) {

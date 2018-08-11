@@ -1,11 +1,12 @@
 import {Injectable} from 'injection-js';
 import GalleryItem from './gallery-item.model';
 import {S3Service} from '../../common/s3.service';
-import {GALLERY_FOLDER, ORIGINAL_FOLDER, RESIZED_FOLDER} from '../shared/gallery.constants';
+import {GALLERY_FOLDER, ORIGINAL_FOLDER, RESIZED_FOLDER, ZIPPED_FOLDER, ZIP_FILE_NAME} from '../shared/gallery.constants';
 import uuid = require('uuid');
 import {Sequelize} from 'sequelize-typescript';
 import {GalleryItemAccess} from './gallery-item-access.enum';
 import GallerySection from '../gallery-sections/gallery-section.model';
+import {CreateGalleryItemDTO} from "./create-gallery-item.dto";
 
 @Injectable()
 export class GalleryItemService {
@@ -70,10 +71,21 @@ export class GalleryItemService {
     }
   }
 
+  async createGalleryItem(item: CreateGalleryItemDTO, partyId: number) {
+    await Promise.all([
+      this.deleteZippedGallery(item.sectionId)
+    ]);
+    return GalleryItem.create({
+      ...item,
+      partyId,
+    });
+  }
+
   async deleteGalleryItem(galleryItem: GalleryItem) {
     await Promise.all([
       this.s3Service.deleteObject(galleryItem.key),
       this.s3Service.deleteObject(galleryItem.resizedKey),
+      this.deleteZippedGallery(galleryItem.sectionId)
     ]);
     await galleryItem.destroy();
   }
@@ -87,6 +99,10 @@ export class GalleryItemService {
     const originalKey = getPath(ORIGINAL_FOLDER);
     const policy = this.s3Service.getUploadPolicy({acl, key: originalKey, contentType});
     return {...policy, resizedKey};
+  }
+
+  deleteZippedGallery(sectionId) {
+    return this.s3Service.deleteObject(`${GALLERY_FOLDER}/${ZIPPED_FOLDER}/${sectionId}/${ZIP_FILE_NAME}`);
   }
 
 }

@@ -18,10 +18,7 @@ export class UserGalleryItemController {
   @Post('/users/me/gallery-items')
   createGalleryItem(@Req() req: Request,
                     @Body() item: CreateGalleryItemDTO) {
-    return GalleryItem.create({
-      ...item,
-      partyId: req.user.partyId,
-    });
+    return this.galleryItemService.createGalleryItem(item, req.user.partyId);
   }
 
   @OnUndefined(200)

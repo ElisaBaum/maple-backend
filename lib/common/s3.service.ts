@@ -40,6 +40,20 @@ export class S3Service {
     );
   }
 
+  async hasObject(key: string): Promise<boolean> {
+    return this.s3.headObject({
+      Bucket: config.aws.s3.bucket,
+      Key: key,
+    }).promise()
+      .then((data) => true)
+      .catch((err) => {
+        if (err.statusCode === 404) {
+          return false;
+        }
+        throw err;
+      });
+  }
+
   deleteObject(key: string) {
     return new Promise((resolve, reject) => {
       this.s3.deleteObject({
