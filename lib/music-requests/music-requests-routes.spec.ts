@@ -1,10 +1,10 @@
 import * as request from "supertest";
 import {injector} from "../injector";
 import {expect} from "chai";
-import {App} from "../App";
-import {AuthenticationService} from "../authentication/AuthenticationService";
+import {App} from "../app";
+import {AuthenticationService} from "../authentication/authentication.service";
 import {OK} from 'http-status-codes';
-import {MAX_MUSIC_REQUESTS_PER_USER} from "./MusicRequestsService";
+import {MAX_MUSIC_REQUESTS_PER_USER} from "./music-requests.service";
 
 // tslint:disable:no-unused-expression
 

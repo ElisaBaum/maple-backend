@@ -67,7 +67,7 @@
     "tslint": "^5.8.0"
   },
   "dependencies": {
-    "@baum/maple-ui": "^1.0.5",
+    "@baum/maple-ui": "^1.1.0",
     "@baum/passport-http": "^1.0.0",
     "@etianen/base-error": "^0.2.1",
     "@types/body-parser": "^1.16.7",
@@ -79,14 +79,15 @@
     "@types/passport": "^0.3.5",
     "@types/passport-http": "^0.3.3",
     "@types/passport-jwt": "^3.0.0",
+    "@types/uuid": "^3.4.3",
     "aws-sdk": "^2.175.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "di-typescript": "^1.1.4",
     "express": "^4.16.2",
     "helmet": "^3.9.0",
     "http-status-codes": "^1.3.0",
+    "injection-js": "^2.2.1",
     "jsonwebtoken": "^8.1.0",
     "multer": "^1.3.0",
     "passport": "^0.4.0",
@@ -98,6 +99,7 @@
     "sequelize-typescript": "^0.6.2",
     "strong-error-handler": "^2.3.0",
     "ts-node": "^3.3.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "uuid": "^3.3.2"
   }
 }

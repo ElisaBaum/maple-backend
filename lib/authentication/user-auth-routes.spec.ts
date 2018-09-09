@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 import * as request from 'supertest';
-import {App} from '../App';
-import {AuthenticationService} from './AuthenticationService';
+import {App} from '../app';
+import {AuthenticationService} from './authentication.service';
 import {OK, UNAUTHORIZED} from 'http-status-codes';
-import {User} from '../user/models/User';
-import {AuthUser} from './AuthUser';
-import {Party} from '../user/models/Party';
-import {RecursivePartial} from '../common/RecursivePartial';
+import {User} from '../user/models/user.model';
+import {AuthUser} from './auth-user.interface';
+import {Party} from '../user/models/party.model';
+import {RecursivePartial} from '../common/recursive-partial.type';
 import {injector} from '../injector';
 import {config} from '../config';
 

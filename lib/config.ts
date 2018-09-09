@@ -1,4 +1,5 @@
 import {minutes} from './utils/date';
+import * as AWS from 'aws-sdk';
 import * as path from "path";
 
 export const config = {
@@ -24,8 +25,12 @@ export const config = {
     },
     s3: {
       bucket: 'maple-backend',
-      signedUrlExpirationTime: minutes(5).inSeconds(),
+      maxBytes: parseFloat(process.env.AWS_S3_UPLOAD_MAX_BYTES || '200000000'),
+      signedUrlExpirationTime: minutes(60).inSeconds(),
     },
+    lambda: {
+      galleryZipperName: 'GalleryZipper'
+    }
   },
   auth: {
     maxFailedAttempts: parseFloat(process.env.AUTH_MAX_FAILED_ATTEMPTS || '5'),
@@ -42,3 +47,5 @@ export const config = {
     maxMusicRequestsPerUser: parseFloat(process.env.MAX_MUSIC_REQUESTS || '5'),
   }
 };
+
+AWS.config.credentials = config.aws.config;

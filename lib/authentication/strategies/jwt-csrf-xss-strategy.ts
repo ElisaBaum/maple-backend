@@ -1,9 +1,9 @@
-import {AuthenticationService} from "../AuthenticationService";
+import {AuthenticationService} from "../authentication.service";
 import * as passport from 'passport';
 import {Request} from "express";
 import {Strategy, VerifiedCallback} from "passport-jwt";
 import {config} from '../../config';
-import {UnauthorizedError} from '../UnauthorizedError';
+import {UnauthorizedError} from '../unauthorized.error';
 
 export const jwtCsrfXssStrategyName = 'jwt-csrf-xss';
 export function jwtCsrfXssStrategy(authService: AuthenticationService): any {

@@ -1,19 +1,19 @@
 import * as request from "supertest";
 import {injector} from "../injector";
 import {expect} from "chai";
-import {App} from "../App";
-import {AuthenticationService} from "../authentication/AuthenticationService";
+import {App} from "../app";
+import {AuthenticationService} from "../authentication/authentication.service";
 import {OK, NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST} from 'http-status-codes';
-import {User} from "../user/models/User";
-import {Party} from "../user/models/Party";
-import {Relation} from "../user/models/Relation";
-import {UserRequestedArtist} from "./models/UserRequestedArtist";
-import {UserRequestedAlbum} from "./models/UserRequestedAlbum";
-import {UserRequestedSong} from "./models/UserRequestedSong";
-import {RequestedArtist} from "./models/RequestedArtist";
-import {RequestedAlbum} from "./models/RequestedAlbum";
-import {RequestedSong} from "./models/RequestedSong";
-import {MAX_MUSIC_REQUESTS_PER_USER} from "./MusicRequestsService";
+import {User} from "../user/models/user.model";
+import {Party} from "../user/models/party.model";
+import {Relation} from "../user/models/relation.model";
+import {UserRequestedArtist} from "./models/user-requested-artist.model";
+import {UserRequestedAlbum} from "./models/user-requested-album.model";
+import {UserRequestedSong} from "./models/user-requested-song.model";
+import {RequestedArtist} from "./models/requested-artist.model";
+import {RequestedAlbum} from "./models/requested-album.model";
+import {RequestedSong} from "./models/requested-song.model";
+import {MAX_MUSIC_REQUESTS_PER_USER} from "./music-requests.service";
 
 // tslint:disable:no-unused-expression
 
