@@ -72,9 +72,7 @@ export class GalleryItemService {
   }
 
   async createGalleryItem(item: CreateGalleryItemDTO, partyId: number) {
-    await Promise.all([
-      this.deleteZippedGallery(item.sectionId)
-    ]);
+    await this.deleteZippedGallery(item.sectionId);
     return GalleryItem.create({
       ...item,
       partyId,
