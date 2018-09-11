@@ -6,7 +6,7 @@ import User from '../../user/models/user.model';
 import GalleryItemRestrictedAccess from './gallery-item-restricted-access.model';
 
 @DefaultScope({
-  order: [['lastModifiedAt', 'ASC'], ['originalName', 'DESC']]
+  order: [['lastModifiedAt', 'ASC'], ['originalName', 'ASC']]
 })
 @Table
 export class GalleryItem extends Model<GalleryItem> {
