@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.4"
+  },
   "scripts": {
     "migrate": "db-migrate up --config migrations-config.json -e db",
     "migrate-down": "db-migrate down -c 1 --config migrations-config.json -e db",
