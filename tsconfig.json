@@ -14,13 +14,14 @@
     "lib": ["es2015", "dom"]
   },
   "include": [
-    "lib",
-    "test"
+    "lib"
   ],
   "files": [
     "index.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "test",
+    "lib/**/*.spec.ts"
   ]
 }

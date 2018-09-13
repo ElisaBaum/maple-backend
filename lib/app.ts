@@ -11,6 +11,7 @@ import * as path from 'path';
 import {config} from './config';
 import {httpRedirectMiddleWare} from './common/https-redirect.middleware';
 import {AuthenticationService} from './authentication/authentication.service';
+import {isTsNode} from './utils/ts-node';
 
 @Injectable()
 export class App {
@@ -33,7 +34,7 @@ export class App {
 
     useExpressServer(this.expressApp, {
       routePrefix: '/api',
-      controllers: [__dirname + "/**/*.controller.ts"],
+      controllers: [__dirname + "/**/*.controller." + (isTsNode ? 'ts' : 'js')],
       defaultErrorHandler: false,
       classTransformer: false,
     });
