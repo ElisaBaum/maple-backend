@@ -6,13 +6,12 @@ import {NotFoundError} from '../../common/errors/not-found.error';
 import GallerySection from './gallery-section.model';
 import {ForbiddenError} from '../../common/errors/forbidden.error';
 import {GalleryItemService} from '../gallery-items/gallery-item.service';
-import {GallerySectionService} from './gallery-section.service';
 
 @Injectable()
 @JsonController()
 export class UserGallerySectionController {
 
-  constructor(private galleryItemService: GalleryItemService, private gallerySectionService: GallerySectionService) {
+  constructor(private galleryItemService: GalleryItemService) {
 
   }
 
@@ -77,13 +76,6 @@ export class UserGallerySectionController {
 
     const gallerySection = await this.validateGallerySection(gallerySectionId, req);
     return this.galleryItemService.getGalleryItemS3Policy(gallerySection, key, contentType);
-  }
-
-  @Get('/users/me/gallery-sections/:id/zipped')
-  async getZippedGallerySection(@Req() req: Request,
-                                @Param('id') gallerySectionId: number) {
-    const gallerySection = await this.validateGallerySection(gallerySectionId, req);
-    return this.gallerySectionService.getZippedGallerySection(gallerySection);
   }
 
   private async validateGallerySection(gallerySectionId: number, req: Request) {
